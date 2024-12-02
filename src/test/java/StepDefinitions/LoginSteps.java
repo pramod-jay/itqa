@@ -1,6 +1,6 @@
 package StepDefinitions;
 
-import io.cucumber.java.en.And;
+import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -16,34 +16,42 @@ import java.time.Duration;
 
 public class LoginSteps {
     WebDriver driver = WebDriverUtil.getDriver();
-    @Given("user is on login page")
-    public void user_is_on_login_page() {
-        driver.get("https://online.uom.lk/login/index.php");
-        System.out.println("Inside Step - user is on login page");
-    }
-    @When("user enters username and password")
-    public void user_enters_username_and_password() {
-        WebElement userName = driver.findElement(By.id("username"));
-        userName.sendKeys("jayathilakaddpd.20");
 
-        WebElement password = driver.findElement(By.id("password"));
-        password.sendKeys("dilshanPJ470!");
-
-        System.out.println("Inside Step - user enters username and password");
+    @Given("I am on the log in page")
+    public void i_am_on_the_log_in_page() {
+        driver.get("https://parabank.parasoft.com/parabank/index.htm?ConnType=JDBC");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
     }
-    @And("clicks on login button")
-    public void clicks_on_login_button() {
-        WebElement loginBtn = driver.findElement(By.id("loginbtn"));
+    @When("I enter a valid username")
+    public void i_enter_a_valid_username() {
+        WebElement userName = driver.findElement(By.name("username"));
+        userName.clear();
+        userName.sendKeys("testUser123");
+    }
+    @When("I enter a valid password")
+    public void i_enter_a_valid_password() {
+        WebElement password = driver.findElement(By.name("password"));
+        password.clear();
+        password.sendKeys("Test@123");
+    }
+    @When("I click the {string} button")
+    public void i_click_the_button(String string) {
+        WebElement loginBtn = driver.findElement(By.xpath("//*[@id=\"loginPanel\"]/form/div[3]/input"));
         loginBtn.click();
-        System.out.println("Inside Step - clicks on login button");
     }
-    @Then("user is navigated to the home page")
-    public void user_is_navigated_to_the_home_page() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlToBe("https://online.uom.lk/my/"));
+    @Then("I should be visible {string} section")
+    public void i_should_be_visible_section(String string) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        wait.until(ExpectedConditions.urlToBe("https://parabank.parasoft.com/parabank/overview.htm"));
 
-        String currentURL = driver.getCurrentUrl();
-        Assert.assertEquals(currentURL, "https://online.uom.lk/my/");
-        System.out.println("Inside Step - user is navigated to the home page");
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertEquals(currentUrl, "https://parabank.parasoft.com/parabank/overview.htm");
+    }
+
+    @After
+    public void tearDown() {
+        if(driver != null) {
+            driver.quit();
+        }
     }
 }
