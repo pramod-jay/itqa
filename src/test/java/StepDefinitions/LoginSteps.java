@@ -26,12 +26,14 @@ public class LoginSteps {
 
         driver.get("https://parabank.parasoft.com/parabank/index.htm?ConnType=JDBC");
     }
+
     @When("I enter a valid username")
     public void i_enter_a_valid_username() {
         WebElement userName = driver.findElement(By.name("username"));
         userName.clear();
         userName.sendKeys("testUser123");
     }
+
     @And("I enter a valid password")
     public void i_enter_a_valid_password() {
         WebElement password = driver.findElement(By.name("password"));
@@ -45,8 +47,22 @@ public class LoginSteps {
         userNameField.clear();
         userNameField.sendKeys(userName);
     }
+
     @And("I enter an invalid password {string}")
     public void i_enter_a_invalid_password(String password) {
+        WebElement passwordField = driver.findElement(By.name("password"));
+        passwordField.clear();
+        passwordField.sendKeys(password);
+    }
+
+    @When("I enter a username {string}")
+    public void i_enter_a_username(String userName) {
+        WebElement userNameField = driver.findElement(By.name("username"));
+        userNameField.clear();
+        userNameField.sendKeys(userName);
+    }
+    @When("I enter a password {string}")
+    public void i_enter_a_password(String password) {
         WebElement passwordField = driver.findElement(By.name("password"));
         passwordField.clear();
         passwordField.sendKeys(password);
@@ -57,6 +73,7 @@ public class LoginSteps {
         WebElement loginBtn = driver.findElement(By.xpath("//*[@id=\"loginPanel\"]/form/div[3]/input"));
         loginBtn.click();
     }
+
     @Then("I should be visible Accounts Overview section")
     public void i_should_be_visible_section() {
         wait.until(ExpectedConditions.urlToBe("https://parabank.parasoft.com/parabank/overview.htm"));
@@ -69,6 +86,7 @@ public class LoginSteps {
     public void i_should_be_visible_error_message(String errorMessage) {
         WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"rightPanel\"]/p")));
         assert errorElement.isDisplayed() : "Expected error message to be displayed: " + errorMessage;
+        Assert.assertEquals(errorElement.getText(), errorMessage, "Error message does not match.");
     }
 
     @After
