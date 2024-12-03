@@ -8,5 +8,5 @@ Feature: createBook
     Given the book details are:
       | id | title        | author      |
       | 3  | Harry Potter | J.K.Rowling |
-    When I send a POST request to "/api/books"
+    When I send a POST request to "api/books"
     Then the response status code should be 201
