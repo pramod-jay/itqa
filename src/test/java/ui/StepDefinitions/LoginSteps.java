@@ -1,4 +1,4 @@
-package StepDefinitions;
+package ui.StepDefinitions;
 
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
@@ -11,7 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import utils.WebDriverUtil;
+import ui.StepDefinitions.utils.WebDriverUtil;
 
 import java.time.Duration;
 
