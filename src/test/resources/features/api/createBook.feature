@@ -10,3 +10,57 @@ Feature: createBook
       | 3  | Harry Potter | J.K.Rowling |
     When I send a POST request to "api/books"
     Then the response status code should be 201
+    And the response should include the book details:
+      | id     |
+      | title  |
+      | author |
+
+  Scenario: Successfully create a book without id
+    Given the book details are:
+      | title       | author        |
+      | Animal Farm | George Orwell |
+    When I send a POST request to "api/books"
+    Then the response status code should be 201
+    And the response should include an auto-generated id
+
+  Scenario: Unsuccessfully create an already entered book
+    Given the book details are:
+      | id | title        | author        |
+      |    | Animal Farm  | George Orwell |
+      | 3  | Harry Potter | J.K.Rowling   |
+    When I send a POST request to "api/books"
+    Then the response status code should be 208
+    And the response should include a message "Book Already Exists"
+
+  Scenario: Unsuccessfully create with invalid credentials
+    Given the book details are:
+      | title         | author       |
+      | The Alchemist | Paulo Coelho |
+    When I send a POST request to "api/books" with username "testUser" and password "Abcd@123"
+    Then the response status code should be 401
+    And the response should include a message "You are not authorized to create the book"
+
+  Scenario Outline: Unsuccessfully create without mandatory parameter
+    Given the book details are:
+      | title  | author   |
+      | <book> | <author> |
+    When I send a POST request to "api/books"
+    Then the response status code should be 400
+    And the response should include a message "Invalid | Empty Input Parameters in the Request"
+
+    Examples:
+      | book              | author          |
+      | The Da Vinci Code |                 |
+      |                   | Stephenie Meyer |
+      |                   |                 |
+
+  Scenario: Successfully create with another book with same author
+    Given the book details are:
+      | title       | author        |
+      | Burmese Days | George Orwell |
+    When I send a POST request to "api/books"
+    Then the response status code should be 201
+    And the response should include the book details:
+      | id     |
+      | title  |
+      | author |

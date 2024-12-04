@@ -1,12 +1,16 @@
 package api.models;
 
 public class BookDetails {
-    private int id;
+    private Integer id;
     private String title;
     private String author;
 
-    public BookDetails(int id, String title, String author) {
-        this.id = id;
+    public BookDetails(String id, String title, String author) {
+        if (id == null || id.trim().isBlank()) {
+            this.id = null;
+        } else {
+            this.id =Integer.parseInt(id);
+        }
         this.title = title;
         this.author = author;
     }
