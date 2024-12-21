@@ -1,6 +1,7 @@
 package ui.StepDefinitions;
 
 import io.cucumber.java.After;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -12,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import ui.utils.WebDriverUtil;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 
@@ -63,9 +65,11 @@ public class ApplyLeaveSteps {
         String currentUrl = driver.getCurrentUrl();
         Assert.assertEquals(currentUrl, "https://opensource-demo.orangehrmlive.com/web/index.php/leave/applyLeave");
     }
-    @Given("I select the leave type")
+    @Then("I select the leave type")
     public void i_select_the_leave_type() {
-        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div/div[2]")));
+        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div/div[2]"
+        )));
         dropDownBtn.click();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -76,7 +80,7 @@ public class ApplyLeaveSteps {
         ));
         dropdownItem.click();
     }
-    @Given("I enter a valid from date")
+    @And("I enter a valid from date")
     public void i_enter_a_valid_from_date() {
         WebElement fromCalendarBtn = driver.findElement(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/div/div/i"
@@ -88,7 +92,7 @@ public class ApplyLeaveSteps {
         ));
         dateElement.click();
     }
-    @Given("I enter a valid to date")
+    @And("I enter a valid to date")
     public void i_enter_a_valid_to_date() {
         WebElement toCalendarBtn = driver.findElement(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/div/div[1]/i"
@@ -103,15 +107,16 @@ public class ApplyLeaveSteps {
     @Then("I should see the {string} selector")
     public void i_should_see_the_selector(String selector) {
         //Check label is displayed
-        WebElement selectorLabel = driver.findElement(By.xpath(
+        WebElement selectorLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div/div/div[1]/label"
-        ));
-        assert  selectorLabel.getText().equals(selector) : "Label text does not match";
+        )));
+
+        Assert.assertEquals(selectorLabel.getText(), selector);
 
         //Check menu is displayed
-        WebElement selectorElement = driver.findElement(By.xpath(
+        WebElement selectorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div/div/div[2]/div/div"
-        ));
+        )));
         selectorElement.click();
         WebElement menuElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div/div/div[2]/div/div[2]"
@@ -149,25 +154,77 @@ public class ApplyLeaveSteps {
         ));
         commentElement.sendKeys(comment);
     }
-    @When("I click the Apply button")
+    @Then("I click the Apply button")
     public void i_click_the_apply_button() {
-       WebElement applyBtn = driver.findElement(By.xpath(
-               "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[5]/button"
-       ));
+        WebElement applyBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//button[contains(@class, 'oxd-button') and contains(@class, 'oxd-button--medium') and contains(@class, 'oxd-button--secondary') and contains(@class, 'orangehrm-left-space')]"
+        )));
        applyBtn.click();
     }
-    @Then("I should see a success message confirming the leave application with title {string} and message {string}")
-    public void i_should_see_a_success_message_confirming_the_leave_application(String title, String message) {
+    @Then("I should see a message with title {string} and message {string}")
+    public void i_should_see_a_message_title_and_message(String title, String message) {
         WebElement msgElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(
                 "oxd-toaster_1"
         )));
         assert msgElement.isDisplayed() : "Message element is not displayed";
 
-        WebElement titleElement = driver.findElement(By.xpath("//*[@id=\"oxd-toaster_1\"]/div/div[1]/div[2]/p[1]"));
-        assert titleElement.getText().equals(title) : "Title does not match";
+        WebElement titleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"oxd-toaster_1\"]/div/div[1]/div[2]/p[1]"
+        )));
+        Assert.assertEquals(titleElement.getText(), title);
 
         WebElement messageElement = driver.findElement(By.xpath("//*[@id=\"oxd-toaster_1\"]/div/div[1]/div[2]/p[2]"));
-        assert  messageElement.getText().equals(message) : "Message does not match";
+        Assert.assertEquals(messageElement.getText(), message);
+    }
+
+    @Then("I should see a {string} error message below all the required fields")
+    public void i_should_see_a_error_message_below_all_the_required_fields(String message) {
+        //Leave type
+        WebElement leaveTypeError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/span"
+        )));
+        assert leaveTypeError.isDisplayed() : "Leave type error message element is not displayed";
+        Assert.assertEquals(leaveTypeError.getText(), message);
+
+        //From date
+        WebElement fromDateError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/span"
+        )));
+        assert fromDateError.isDisplayed() : "From date error message element is not displayed";
+        Assert.assertEquals(fromDateError.getText(), message);
+
+        //To date
+        WebElement toDateError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/span"
+        )));
+        assert toDateError.isDisplayed() : "To date error message element is not displayed";
+        Assert.assertEquals(toDateError.getText(), message);
+    }
+
+    @And("I enter a weekend date as the from date")
+    public void i_enter_a_weekend_date_as_the_from_date() {
+        WebElement fromCalendarBtn = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/div/div/i"
+        ));
+        fromCalendarBtn.click();
+
+        WebElement dateElement = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/div/div[2]/div/div[3]/div["+getWeekend()+"]"
+        ));
+        dateElement.click();
+    }
+
+    @And("I enter a weekend date as the to date")
+    public void i_enter_a_weekend_date_as_the_to_date() {
+        WebElement toCalendarBtn = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/div/div[1]/i"
+        ));
+        toCalendarBtn.click();
+
+        WebElement dateElement = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/div/div[2]/div/div[3]/div["+getWeekend()+"]"
+        ));
+        dateElement.click();
     }
 
     @After
@@ -179,5 +236,21 @@ public class ApplyLeaveSteps {
 
     private Integer getDate(LocalDate date) {
         return date.getDayOfMonth();
+    }
+
+    private Integer getWeekend() {
+        LocalDate nextSunday = LocalDate.now().with(DayOfWeek.SUNDAY);
+        if(!LocalDate.now().getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+            nextSunday = nextSunday.with(DayOfWeek.SUNDAY).plusWeeks(1);
+        }
+        return getDate(nextSunday);
+    }
+
+    private Integer getMonday() {
+        LocalDate nextMonday = LocalDate.now().with(DayOfWeek.MONDAY);
+        if(!LocalDate.now().getDayOfWeek().equals(DayOfWeek.MONDAY)) {
+            nextMonday = nextMonday.with(DayOfWeek.SUNDAY).plusWeeks(1);
+        }
+        return getDate(nextMonday);
     }
 }
