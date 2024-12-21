@@ -3,7 +3,7 @@
 # Description Feature file for test create book API
 
 Feature: createBook
-
+  @TestCaseId("API_TC001")
   Scenario: Successfully create a book with all parameters
     Given the book details are:
       | id | title        | author      |
@@ -15,6 +15,7 @@ Feature: createBook
       | title  |
       | author |
 
+  @TestCaseId("API_TC002")
   Scenario: Successfully create a book without id
     Given the book details are:
       | title       | author        |
@@ -23,6 +24,7 @@ Feature: createBook
     Then the response status code should be 201
     And the response should include an auto-generated id
 
+  @TestCaseId("API_TC003")
   Scenario: Unsuccessfully create an already entered book
     Given the book details are:
       | id | title        | author        |
@@ -32,6 +34,7 @@ Feature: createBook
     Then the response status code should be 208
     And the response should include a message "Book Already Exists"
 
+  @TestCaseId("API_TC004")
   Scenario: Unsuccessfully create with invalid credentials
     Given the book details are:
       | title         | author       |
@@ -40,6 +43,7 @@ Feature: createBook
     Then the response status code should be 401
     And the response should include a message "You are not authorized to create the book"
 
+  @TestCaseId("API_TC005")
   Scenario Outline: Unsuccessfully create without mandatory parameter
     Given the book details are:
       | title  | author   |
@@ -54,6 +58,7 @@ Feature: createBook
       |                   | Stephenie Meyer |
       |                   |                 |
 
+  @TestCaseId("API_TC006")
   Scenario: Successfully create with another book with same author
     Given the book details are:
       | title       | author        |
