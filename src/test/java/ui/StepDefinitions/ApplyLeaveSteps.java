@@ -80,42 +80,55 @@ public class ApplyLeaveSteps {
         ));
         dropdownItem.click();
     }
-    @And("I enter a valid from date")
-    public void i_enter_a_valid_from_date() {
+    @And("I enter a {string} as the from date")
+    public void i_enter_a_from_date(String type) {
         WebElement fromCalendarBtn = driver.findElement(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/div/div/i"
         ));
         fromCalendarBtn.click();
-        Integer currentDate = getDate(LocalDate.now());
+
+        Integer date = switch (type) {
+            case "today" -> getDate(LocalDate.now());
+            case "weekend" -> getWeekend();
+            case "monday" -> getWeekday();
+            default -> 1;
+        };
+
         WebElement dateElement = driver.findElement(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/div/div[2]/div/div[3]/div["+currentDate+"]"
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/div/div[2]/div/div[3]/div["+date+"]"
         ));
         dateElement.click();
     }
-    @And("I enter a valid to date")
-    public void i_enter_a_valid_to_date() {
+    @And("I enter a {string} as the to date")
+    public void i_enter_a_to_date(String type) {
         WebElement toCalendarBtn = driver.findElement(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/div/div[1]/i"
         ));
         toCalendarBtn.click();
+        Integer date = switch (type) {
+            case "day_after_tomorrow" -> getDate(LocalDate.now().plusDays(2));
+            case "weekend" -> getWeekend();
+            case "monday" -> getWeekday();
+            default -> 1;
+        };
         Integer dayAfterTomorrow = getDate(LocalDate.now().plusDays(2));
         WebElement dateElement = driver.findElement(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/div/div[2]/div/div[3]/div["+dayAfterTomorrow+"]"
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/div/div[2]/div/div[3]/div["+date+"]"
         ));
         dateElement.click();
     }
-    @Then("I should see the {string} selector")
-    public void i_should_see_the_selector(String selector) {
+    @Then("I should see the Partial Days selector")
+    public void i_should_see_the_partial_days_selector() {
         //Check label is displayed
         WebElement selectorLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div/div/div[1]/label"
         )));
 
-        Assert.assertEquals(selectorLabel.getText(), selector);
+        Assert.assertEquals(selectorLabel.getText(), "Partial Days");
 
         //Check menu is displayed
         WebElement selectorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div/div/div[2]/div/div"
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[1]/div/div[2]/div/div"
         )));
         selectorElement.click();
         WebElement menuElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -142,7 +155,7 @@ public class ApplyLeaveSteps {
 
         for(int i=0; i<menuItem.length; i++) {
             WebElement item = driver.findElement(By.xpath(menuItem[i]));
-            assert  item.getText().equals(itemText[i]) : "Item does not match";
+            Assert.assertEquals(item.getText(), itemText[i]);
         }
         //Close selector
         selectorElement.click();
@@ -200,31 +213,168 @@ public class ApplyLeaveSteps {
         assert toDateError.isDisplayed() : "To date error message element is not displayed";
         Assert.assertEquals(toDateError.getText(), message);
     }
+    @Then("I should see the Duration selector")
+    public void i_should_see_the_duration_selector() {
+        //Check label is displayed
+        WebElement selectorLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[1]/div/div[1]/label"
+        )));
+        Assert.assertEquals(selectorLabel.getText(), "Duration");
 
-    @And("I enter a weekend date as the from date")
-    public void i_enter_a_weekend_date_as_the_from_date() {
-        WebElement fromCalendarBtn = driver.findElement(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/div/div/i"
-        ));
-        fromCalendarBtn.click();
+        //Check menu is displayed
+        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[1]/div/div[2]/div/div"
+        )));
+        dropDownBtn.click();
 
-        WebElement dateElement = driver.findElement(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/div/div[2]/div/div[3]/div["+getWeekend()+"]"
-        ));
-        dateElement.click();
+        WebElement selectorMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div/div/div[2]/div/div[2]"
+        )));
+        assert selectorMenu.isDisplayed() : "Selector menu is not displayed";
+
+        //Check menu items
+        String[] menuItems = {
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div/div/div[2]/div/div[2]/div[1]/span",
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div/div/div[2]/div/div[2]/div[2]/span",
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div/div/div[2]/div/div[2]/div[3]/span",
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div/div/div[2]/div/div[2]/div[4]/span"
+        };
+
+        String[] itemTexts = {
+                "Full Day",
+                "Half Day - Morning",
+                "Half Day - Afternoon",
+                "Specify Time"
+        };
+
+        for(int i =0; i<menuItems.length; i++) {
+            WebElement menuItem = driver.findElement(By.xpath(menuItems[i]));
+            Assert.assertEquals(menuItem.getText(), itemTexts[i]);
+        }
     }
+    @Then("I should see the Duration")
+    public void i_should_see_the_duration() {
+        WebElement durationLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[4]/div/div[1]/label"
+        )));
+        Assert.assertEquals(durationLabel.getText(), "Duration");
 
-    @And("I enter a weekend date as the to date")
-    public void i_enter_a_weekend_date_as_the_to_date() {
-        WebElement toCalendarBtn = driver.findElement(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/div/div[1]/i"
+        //Duration should be 8.00 hours
+        WebElement duration = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[4]/div/div[2]/p"
+        )));
+        Assert.assertEquals(duration.getText(), "8.00");
+    }
+    @When("I select the specify time from the menu")
+    public void i_select_the_specify_time_from_the_menu() {
+        WebElement specifyTimeBtn  = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div/div/div[2]/div/div[2]/div[4]"
         ));
-        toCalendarBtn.click();
+        specifyTimeBtn.click();
+    }
+    @Then("I should see the From time selector")
+    public void i_should_see_the_from_time_selector() {
+        WebElement selectorLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[2]/div/div[1]/label"
+        )));
+        Assert.assertEquals(selectorLabel.getText(), "From");
 
-        WebElement dateElement = driver.findElement(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/div/div[2]/div/div[3]/div["+getWeekend()+"]"
+        WebElement selectorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[2]/div/div[2]/div"
+        )));
+        selectorElement.click();
+
+        WebElement timeSelector = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[2]/div/div[2]/div/div[2]"
+        )));
+        assert timeSelector.isDisplayed() : "Time selector is not displayed";
+    }
+    @Then("I set From time as 10.00AM")
+    public void i_set_from_time_as_00am() {
+        WebElement hourIncrementBtn = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[2]/div/div[2]/div/div[2]/div[1]/i[1]"
         ));
-        dateElement.click();
+
+        //Increment hours to 10
+        while(true) {
+            hourIncrementBtn.click();
+            WebElement hourValue = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                    "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[2]/div/div[2]/div/div[2]/div[1]/input"
+            )));
+
+            String value = hourValue.getDomProperty("value");
+            assert value != null;
+            if(value.equals("10")) {
+                break;
+            }
+        }
+
+        //Set minutes value as 00
+        WebElement minuteValue = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[2]/div/div[2]/div/div[2]/div[3]/input"
+        ));
+        minuteValue.sendKeys("00");
+
+        //Set meridian as AM
+        WebElement AMBtn = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[2]/div/div[2]/div/div[2]/div[4]/div[1]"
+        ));
+        AMBtn.click();
+    }
+    @And("I should see the To time selector")
+    public void i_should_see_the_to_time_selector() {
+        WebElement selectorLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[3]/div/div[1]/label"
+        )));
+        Assert.assertEquals(selectorLabel.getText(), "To");
+
+        WebElement selectorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[3]/div/div[2]/div/div"
+        )));
+        selectorElement.click();
+
+        WebElement timeSelector = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[3]/div/div[2]/div/div[2]"
+        )));
+        assert timeSelector.isDisplayed() : "Time selector is not displayed";
+    }
+    @Then("I set To time as 2.00PM")
+    public void i_set_to_time_as_00pm() {
+        WebElement hourDecrementBtn = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[3]/div/div[2]/div/div[2]/div[1]/i[2]"
+        ));
+
+        //Decrement hours to 02
+        while (true) {
+            hourDecrementBtn.click();
+            WebElement hourValue = driver.findElement(By.xpath(
+                    "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[3]/div/div[2]/div/div[2]/div[1]/input"
+            ));
+            String value = hourValue.getDomProperty("value");
+            assert value != null;
+            if(value.equals("02")) {
+                break;
+            }
+        }
+
+        //Set minutes value as 00
+        WebElement minutesValue = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[3]/div/div[2]/div/div[2]/div[3]/input"
+        ));
+        minutesValue.sendKeys("00");
+
+        //Set meridian as PM
+        WebElement PMBtn = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[3]/div/div[2]/div/div[2]/div[4]/div[2]"
+        ));
+        PMBtn.click();
+    }
+    @And("I should see the Duration calculation")
+    public void i_should_see_the_calculation() {
+        WebElement duration = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[4]/div/div[2]/p"
+        ));
+        Assert.assertEquals(duration.getText(), "4.00");
     }
 
     @After
@@ -246,10 +396,10 @@ public class ApplyLeaveSteps {
         return getDate(nextSunday);
     }
 
-    private Integer getMonday() {
-        LocalDate nextMonday = LocalDate.now().with(DayOfWeek.MONDAY);
-        if(!LocalDate.now().getDayOfWeek().equals(DayOfWeek.MONDAY)) {
-            nextMonday = nextMonday.with(DayOfWeek.SUNDAY).plusWeeks(1);
+    private Integer getWeekday() {
+        LocalDate nextMonday = LocalDate.now().with(DayOfWeek.TUESDAY);
+        if(!LocalDate.now().getDayOfWeek().equals(DayOfWeek.TUESDAY)) {
+            nextMonday = nextMonday.with(DayOfWeek.TUESDAY).plusWeeks(1);
         }
         return getDate(nextMonday);
     }
