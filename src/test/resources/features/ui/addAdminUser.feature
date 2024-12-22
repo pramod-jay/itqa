@@ -1,11 +1,10 @@
-
 Feature: Add Admin User
   As a admin
   I want to add new admin user to system
   So that then I can add more admins to the system
 
 
-    Scenario: : Successful login with valid credentials
+  Background: Successful login with valid credentials
     Given I am on the login screen
     When I enter a valid username "Admin"
     And I enter a valid password "admin123"
@@ -17,20 +16,20 @@ Feature: Add Admin User
     Then I should see the Add User Form
 
 
-  @TestCaseId("UI_TC001")
+  @TestCaseId("UI_TC010")
   Scenario Outline: Successful user creation with all required fields filled correctly
     Then I select a user role from the dropdown
     And I select a status from the dropdown
-    And I type "John Doe" in the employee name field
-    And I enter "john doe" in the user name field
+    And I type "Ranga Akunuri" in the employee name field
+    And I enter "Range" in the user name field
     And I enter "Password123!" in the password field
     And I enter "Password123!" in the confirm password field
     Then I click the Save button
     Then I should see a message with title "<title>" and message "<message>"
 
     Examples:
-      | title   | message             |
-      | Success | User Successfully Added |
+      | title   | message            |
+      | Success | Successfully Saved |
 
 
 #  @TestCaseId("UI_TC003")
