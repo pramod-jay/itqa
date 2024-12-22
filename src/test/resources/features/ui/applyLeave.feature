@@ -19,9 +19,9 @@ Feature: Apply Leave
   @TestCaseId("UI_TC001")
   Scenario Outline: Successful leave application for three days with all the required data
     Then I select the leave type
-    And I enter a valid from date
-    And I enter a valid to date
-    Then I should see the "Partial Days" selector
+    And I enter a "today" as the from date
+    And I enter a "day_after_tomorrow" as the to date
+    Then I should see the Partial Days selector
     And I enter comments as "Test Comment"
     Then I click the Apply button
     Then I should see a message with title "<title>" and message "<message>"
@@ -38,8 +38,8 @@ Feature: Apply Leave
   @TestCaseId("UI_TC003")
   Scenario Outline: Unsuccessful leave application with non-working days
     Then I select the leave type
-    And I enter a weekend date as the from date
-    And I enter a weekend date as the to date
+    And I enter a "weekend" as the from date
+    And I enter a "weekend" as the to date
     Then I click the Apply button
     Then I should see a message with title "<title>" and message "<message>"
 
@@ -48,9 +48,25 @@ Feature: Apply Leave
       | Error | Failed to Submit: No Working Days Selected |
 
   @TestCaseId("UI_TC004")
-  Scenario: Successful leave application on a day
+  Scenario Outline: Successful leave application for a day with time period
+    Then I select the leave type
+    And I enter a "monday" as the from date
+    And I enter a "monday" as the to date
+    Then I should see the Duration selector
+    When I select the specify time from the menu
+    Then I should see the Duration
+    Then I should see the From time selector
+    And I set From time as 10.00AM
+    Then I should see the To time selector
+    And I set To time as 2.00PM
+    And I should see the Duration calculation
+    And I enter comments as "Test Comment"
+    Then I click the Apply button
+    Then I should see a message with title "<title>" and message "<message>"
 
-
+    Examples:
+      | title   | message            |
+      | Success | Successfully Saved |
 
 
 
