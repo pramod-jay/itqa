@@ -12,3 +12,5 @@ Feature: Add qualifications
     Then I should see the personal info screen
     When I click the Qualifications button
     Then I should see the Qualifications screen
+    When I click work experience add button
+    Then I should see the work experience adding section
