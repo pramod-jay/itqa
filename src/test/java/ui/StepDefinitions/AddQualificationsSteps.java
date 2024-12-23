@@ -35,7 +35,7 @@ public class AddQualificationsSteps extends BaseSteps {
     @When("I click the Qualifications button")
     public void i_click_the_qualifications_button() {
         WebElement qualificationsBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[1]/div[2]/div[9]/a"
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[1]/div[2]/div[10]/a"
         )));
         qualificationsBtn.click();
     }
