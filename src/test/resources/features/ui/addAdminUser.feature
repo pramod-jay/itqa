@@ -16,12 +16,12 @@ Feature: Add Admin User
     Then I should see the Add User Form
 
 
-  @TestCaseId("UI_TC010")
+  @TestCaseId("UI_TC005")
   Scenario Outline: Successful user creation with all required fields filled correctly
     Then I select a user role from the dropdown
     And I select a status from the dropdown
     And I type "Vaishali Chaudhari" in the employee name field
-    And I enter "RangabROW469" in the user name field
+    And I enter "Ranga901" in the user name field
     And I enter "Password123!" in the password field
     And I enter "Password123!" in the confirm password field
     Then I click the Save button
@@ -32,25 +32,10 @@ Feature: Add Admin User
       | Success | Successfully Saved |
 
 
-#  @TestCaseId("UI_TC003")
-#  Scenario Outline: Validation error when required fields are left empty
-#    Then I leave the user role field empty
-#    And I leave the status field empty
-#    And I leave the employee name field empty
-#    And I leave the user name field empty
-#    And I leave the password field empty
-#    And I leave the confirm password field empty
-#    When I click the Save button
-#    Then I should see validation errors for all fields with the message "<message>"
-#
-#    Examples:
-#      | message            |
-#      | Required           |
 
-#
-#
-  @TestCaseId("UI_TC004")
-  Scenario Outline: Error message displayed when passwords do not match
+
+  @TestCaseId("UI_TC006")
+  Scenario: Error message displayed when passwords do not match
     Then I select a user role from the dropdown
     And I select a status from the dropdown
     And I type "Vaishali Chaudhari" in the employee name field
@@ -58,14 +43,12 @@ Feature: Add Admin User
     And I enter "Password123!" in the password field
     And I enter "Password456!" in the confirm password field
     When I click the Save button
-    Then I should see a password mismatch error with message "<message>"
-
-    Examples:
-      | message                 |
-      | Passwords do not match  |
+    Then I should see a password mismatch error with message "Passwords do not match"
 
 
-  @TestCaseId("UI_TC005")
+
+
+  @TestCaseId("UI_TC007")
   Scenario Outline: Validation error for weak password
     Then I select a user role from the dropdown
     And I select a status from the dropdown
@@ -80,4 +63,17 @@ Feature: Add Admin User
       | weak_password | message                                                 |
       | 123456        | Should have at least 7 characters                       |
       | password      | Your password must contain minimum 1 number             |
+
+
+  @TestCaseId("UI_TC008")
+  Scenario: Validation error when required fields are left empty
+    Then I leave the user role field empty
+    And I leave the status field empty
+    And I leave the employee name field empty
+    And I leave the user name field empty
+    And I leave the password field empty
+    And I leave the confirm password field empty
+    When I click the Save button
+    Then I should see "Required" validation errors for all general fields
+    And I should see "Passwords do not match" for the confirm password field
 

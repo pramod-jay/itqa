@@ -7,13 +7,12 @@ package ui.StepDefinitions;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.en.Given;
+
 import io.cucumber.java.en.And;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -27,7 +26,7 @@ import static org.testng.AssertJUnit.assertEquals;
 public class AddAdminUser extends BaseSteps {
     @Before
     public void setup() {
-        wait =  new WebDriverWait(driver, Duration.ofSeconds(10));;
+        wait =  new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
 
@@ -178,4 +177,70 @@ public class AddAdminUser extends BaseSteps {
 
 
 
+//    Validation error when required fields are left empty
+
+    @Then("I leave the user role field empty")
+    public void iLeaveTheUserRoleFieldEmpty() {
+        WebElement userRoleField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div/input"
+        )));
+        userRoleField.sendKeys("");
+    }
+
+    @And("I leave the status field empty")
+    public void iLeaveTheStatusFieldEmpty() {
+        WebElement statusField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[3]/div/div[2]/input"
+        )));
+        statusField.sendKeys("");
+    }
+
+    @And("I leave the employee name field empty")
+    public void iLeaveTheEmployeeNameFieldEmpty() {
+        WebElement employeeNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[2]/div/div[2]/div/div/input"
+        )));
+        employeeNameField.sendKeys("");
+    }
+
+    @And("I leave the user name field empty")
+    public void iLeaveTheUserNameFieldEmpty() {
+        WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[4]/div/div[2]/input"
+        )));
+        userNameField.sendKeys("");
+    }
+
+    @And("I leave the password field empty")
+    public void iLeaveThePasswordFieldEmpty() {
+        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/input"
+        )));
+        passwordField.sendKeys("");
+    }
+
+    @And("I leave the confirm password field empty")
+    public void iLeaveTheConfirmPasswordFieldEmpty() {
+        WebElement confirmPasswordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/input"
+        )));
+        confirmPasswordField.sendKeys("");
+    }
+
+
+    @Then("I should see {string} validation errors for all general fields")
+    public void iShouldSeeValidationErrorsForAllGeneralFields(String validationMessage) {
+        List<WebElement> validationErrors = driver.findElements(By.xpath("//span[@class='oxd-text oxd-text--span oxd-input-field-error-message']"));
+        for (WebElement error : validationErrors) {
+            Assert.assertEquals(error.getText(), validationMessage);
+        }
+    }
+
+    @And("I should see {string} for the confirm password field")
+    public void iShouldSeeForTheConfirmPasswordField(String validationMessage) {
+        WebElement confirmPasswordError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/span"
+        )));
+        Assert.assertEquals(confirmPasswordError.getText(), validationMessage);
+    }
 }
