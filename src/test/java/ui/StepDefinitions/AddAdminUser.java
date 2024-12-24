@@ -181,32 +181,50 @@ public class AddAdminUser extends BaseSteps {
 
     @Then("I leave the user role field empty")
     public void iLeaveTheUserRoleFieldEmpty() {
-        // No action needed as the field is left empty
+        WebElement userRoleField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div/input"
+        )));
+        userRoleField.sendKeys("");
     }
 
     @And("I leave the status field empty")
     public void iLeaveTheStatusFieldEmpty() {
-        // No action needed as the field is left empty
+        WebElement statusField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[3]/div/div[2]/input"
+        )));
+        statusField.sendKeys("");
     }
 
     @And("I leave the employee name field empty")
     public void iLeaveTheEmployeeNameFieldEmpty() {
-        // No action needed as the field is left empty
+        WebElement employeeNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[2]/div/div[2]/div/div/input"
+        )));
+        employeeNameField.sendKeys("");
     }
 
     @And("I leave the user name field empty")
     public void iLeaveTheUserNameFieldEmpty() {
-        // No action needed as the field is left empty
+        WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[4]/div/div[2]/input"
+        )));
+        userNameField.sendKeys("");
     }
 
     @And("I leave the password field empty")
     public void iLeaveThePasswordFieldEmpty() {
-        // No action needed as the field is left empty
+        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/input"
+        )));
+        passwordField.sendKeys("");
     }
 
     @And("I leave the confirm password field empty")
     public void iLeaveTheConfirmPasswordFieldEmpty() {
-        // No action needed as the field is left empty
+        WebElement confirmPasswordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/input"
+        )));
+        confirmPasswordField.sendKeys("");
     }
 
 
