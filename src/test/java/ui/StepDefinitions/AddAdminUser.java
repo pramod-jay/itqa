@@ -21,6 +21,7 @@ import ui.BaseSteps.BaseSteps;
 
 import java.time.Duration;
 import java.util.List;
+import static org.testng.AssertJUnit.assertEquals;
 
 
 public class AddAdminUser extends BaseSteps {
@@ -151,85 +152,23 @@ public class AddAdminUser extends BaseSteps {
 
 
 
-//    Check Empty
 
-    @Then("I leave the user role field empty")
-    public void iLeaveTheUserRoleFieldEmpty() {
-        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id='app']/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
-        )));
-        dropDownBtn.click();
-        // Do not select any value and click outside to trigger validation
-        driver.findElement(By.xpath("//*[@id='app']/div[1]/div[2]/div[1]")).click();
-    }
+//    Validation error for weak password
 
-    @And("I leave the status field empty")
-    public void iLeaveTheStatusFieldEmpty() {
-        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id='app']/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[3]/div/div[2]"
-        )));
-        dropDownBtn.click();
-        driver.findElement(By.xpath("//*[@id='app']/div[1]/div[2]/div[1]")).click();
-    }
+    @Then("I should see a password strength error with message {string}")
+    public void i_should_see_a_password_strength_error_with_message(String expectedMessage) {
+        try {
+            // Locate the error message using a relative XPath based on class
+            WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//span[contains(@class, 'oxd-input-field-error-message') and text()='" + expectedMessage + "']")
+            ));
 
-    @And("I leave the employee name field empty")
-    public void iLeaveTheEmployeeNameFieldEmpty() {
-        WebElement employeeNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id='app']/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[2]/div/div[2]/div/div/input"
-        )));
-        employeeNameField.clear();
-        driver.findElement(By.xpath("//*[@id='app']/div[1]/div[2]/div[1]")).click();
-    }
-
-    @And("I leave the user name field empty")
-    public void iLeaveTheUserNameFieldEmpty() {
-        WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id='app']/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[4]/div/div[2]/input"
-        )));
-        userNameField.clear();
-        driver.findElement(By.xpath("//*[@id='app']/div[1]/div[2]/div[1]")).click();
-    }
-
-    @And("I leave the password field empty")
-    public void iLeaveThePasswordFieldEmpty() {
-        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id='app']/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[1]/div/div[2]/input"
-        )));
-        passwordField.clear();
-        driver.findElement(By.xpath("//*[@id='app']/div[1]/div[2]/div[1]")).click();
-    }
-
-    @And("I leave the confirm password field empty")
-    public void iLeaveTheConfirmPasswordFieldEmpty() {
-        WebElement confirmPasswordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id='app']/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/input"
-        )));
-        confirmPasswordField.clear();
-        driver.findElement(By.xpath("//*[@id='app']/div[1]/div[2]/div[1]")).click();
-    }
-
-    @Then("I should see validation errors for all fields with the message {string}")
-    public void iShouldSeeValidationErrorsForAllFieldsWithTheMessage(String message) {
-        List<WebElement> errorMessages = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(
-                "//span[@class='oxd-text oxd-text--span oxd-input-field-error-message']"
-        )));
-
-        boolean passwordMismatchFound = false;
-
-        for (WebElement errorMsg : errorMessages) {
-            String actualMessage = errorMsg.getText();
-
-            if (actualMessage.equals("Passwords do not match")) {
-                passwordMismatchFound = true;
-            } else {
-                Assert.assertEquals(actualMessage, message, "Validation error did not match for all fields.");
-            }
+            String actualMessage = errorMessage.getText();
+            assertEquals(expectedMessage, actualMessage);
+        } catch (Exception e) {
+            throw new AssertionError("The password strength error message was not found: " + e.getMessage());
         }
-
-        // Ensure at least one password error exists
-        Assert.assertTrue(passwordMismatchFound, "Expected 'Passwords do not match' but it was not found.");
-
-        // Optional: Ensure the total number of errors match (adjust if password validation is separate)
-        Assert.assertEquals(errorMessages.size(), 6, "Number of validation errors is incorrect.");
     }
+
+
 }
