@@ -142,12 +142,20 @@ public class AddAdminUser extends BaseSteps {
         )));
         saveButton.click();
     }
+
+
+
+//  Error message displayed when passwords do not match
+
     @Then("I should see a password mismatch error with message {string}")
-    public void i_should_see_a_password_mismatch_error_with_message(String errorMessage) {
-        WebElement errorText = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div[2]/div/span"
-        )));
-        Assert.assertEquals(errorText.getText(), errorMessage);
+    public void iShouldSeeAPasswordMismatchErrorWithMessage(String expectedMessage) {
+        // Locate the error message using the provided XPath
+        WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[@id='app']/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/span")
+        ));
+
+        String actualMessage = errorMessage.getText();
+        assertEquals(expectedMessage, actualMessage);
     }
 
 
@@ -157,7 +165,7 @@ public class AddAdminUser extends BaseSteps {
 
     @Then("I should see a password strength error with message {string}")
     public void i_should_see_a_password_strength_error_with_message(String expectedMessage) {
-        try {
+
             // Locate the error message using a relative XPath based on class
             WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//span[contains(@class, 'oxd-input-field-error-message') and text()='" + expectedMessage + "']")
@@ -165,10 +173,9 @@ public class AddAdminUser extends BaseSteps {
 
             String actualMessage = errorMessage.getText();
             assertEquals(expectedMessage, actualMessage);
-        } catch (Exception e) {
-            throw new AssertionError("The password strength error message was not found: " + e.getMessage());
-        }
+
     }
+
 
 
 }
