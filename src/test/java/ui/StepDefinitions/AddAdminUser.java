@@ -178,4 +178,52 @@ public class AddAdminUser extends BaseSteps {
 
 
 
+//    Validation error when required fields are left empty
+
+    @Then("I leave the user role field empty")
+    public void iLeaveTheUserRoleFieldEmpty() {
+        // No action needed as the field is left empty
+    }
+
+    @And("I leave the status field empty")
+    public void iLeaveTheStatusFieldEmpty() {
+        // No action needed as the field is left empty
+    }
+
+    @And("I leave the employee name field empty")
+    public void iLeaveTheEmployeeNameFieldEmpty() {
+        // No action needed as the field is left empty
+    }
+
+    @And("I leave the user name field empty")
+    public void iLeaveTheUserNameFieldEmpty() {
+        // No action needed as the field is left empty
+    }
+
+    @And("I leave the password field empty")
+    public void iLeaveThePasswordFieldEmpty() {
+        // No action needed as the field is left empty
+    }
+
+    @And("I leave the confirm password field empty")
+    public void iLeaveTheConfirmPasswordFieldEmpty() {
+        // No action needed as the field is left empty
+    }
+
+
+    @Then("I should see {string} validation errors for all general fields")
+    public void iShouldSeeValidationErrorsForAllGeneralFields(String validationMessage) {
+        List<WebElement> validationErrors = driver.findElements(By.xpath("//span[@class='oxd-text oxd-text--span oxd-input-field-error-message']"));
+        for (WebElement error : validationErrors) {
+            Assert.assertEquals(error.getText(), validationMessage);
+        }
+    }
+
+    @And("I should see {string} for the confirm password field")
+    public void iShouldSeeForTheConfirmPasswordField(String validationMessage) {
+        WebElement confirmPasswordError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/span"
+        )));
+        Assert.assertEquals(confirmPasswordError.getText(), validationMessage);
+    }
 }
