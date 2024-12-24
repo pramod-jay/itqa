@@ -21,7 +21,7 @@ Feature: Add Admin User
     Then I select a user role from the dropdown
     And I select a status from the dropdown
     And I type "Ranga Akunuri" in the employee name field
-    And I enter "Range" in the user name field
+    And I enter "Rang454e5" in the user name field
     And I enter "Password123!" in the password field
     And I enter "Password123!" in the confirm password field
     Then I click the Save button
@@ -32,21 +32,21 @@ Feature: Add Admin User
       | Success | Successfully Saved |
 
 
-#  @TestCaseId("UI_TC003")
-#  Scenario Outline: Validation error when required fields are left empty
-#    Then I leave the user role field empty
-#    And I leave the status field empty
-#    And I leave the employee name field empty
-#    And I leave the user name field empty
-#    And I leave the password field empty
-#    And I leave the confirm password field empty
-#    When I click the Save button
-#    Then I should see validation errors for all fields with the message "<message>"
-#
-#    Examples:
-#      | message            |
-#      | Necessary          |
-#
+  @TestCaseId("UI_TC003")
+  Scenario Outline: Validation error when required fields are left empty
+    Then I leave the user role field empty
+    And I leave the status field empty
+    And I leave the employee name field empty
+    And I leave the user name field empty
+    And I leave the password field empty
+    And I leave the confirm password field empty
+    When I click the Save button
+    Then I should see validation errors for all fields with the message "<message>"
+
+    Examples:
+      | message            |
+      | Required           |
+
 #
 #
 #  @TestCaseId("UI_TC004")
