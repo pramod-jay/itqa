@@ -20,8 +20,8 @@ Feature: Add Admin User
   Scenario Outline: Successful user creation with all required fields filled correctly
     Then I select a user role from the dropdown
     And I select a status from the dropdown
-    And I type "Ranga Akunuri" in the employee name field
-    And I enter "RangabROW1" in the user name field
+    And I type "Vaishali Chaudhari" in the employee name field
+    And I enter "RangabROW469" in the user name field
     And I enter "Password123!" in the password field
     And I enter "Password123!" in the confirm password field
     Then I click the Save button
@@ -49,27 +49,27 @@ Feature: Add Admin User
 
 #
 #
-#  @TestCaseId("UI_TC004")
-#  Scenario Outline: Error message displayed when passwords do not match
-#    Then I select a "user role" from the dropdown
-#    And I select a "status" from the dropdown
-#    And I type "John Doe" in the employee name field
-#    And I enter "johndoe" in the user name field
-#    And I enter "Password123!" in the password field
-#    And I enter "Password456!" in the confirm password field
-#    When I click the Save button
-#    Then I should see a password mismatch error with message "<message>"
-#
-#    Examples:
-#      | message                 |
-#      | The passwords do not match |
-#
-#
+  @TestCaseId("UI_TC004")
+  Scenario Outline: Error message displayed when passwords do not match
+    Then I select a user role from the dropdown
+    And I select a status from the dropdown
+    And I type "Vaishali Chaudhari" in the employee name field
+    And I enter "johndoe34" in the user name field
+    And I enter "Password123!" in the password field
+    And I enter "Password456!" in the confirm password field
+    When I click the Save button
+    Then I should see a password mismatch error with message "<message>"
+
+    Examples:
+      | message                 |
+      | Passwords do not match  |
+
+
   @TestCaseId("UI_TC005")
   Scenario Outline: Validation error for weak password
     Then I select a user role from the dropdown
     And I select a status from the dropdown
-    And I type "Ranga Akunuri" in the employee name field
+    And I type "Vaishali Chaudhari" in the employee name field
     And I enter "johndoe3446" in the user name field
     And I enter "<weak_password>" in the password field
     And I enter "<weak_password>" in the confirm password field
