@@ -125,13 +125,13 @@ public class AddQualificationsSteps extends BaseSteps {
         date.click();
     }
 
-    @And("I enter comments as {string}")
-    public void i_enter_comments(String comment) {
-        WebElement commentElement = driver.findElement(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[3]/div/div/div/div[2]/textarea"
-        ));
-        commentElement.sendKeys(comment);
-    }
+//    @And("I enter comments as {string}")
+//    public void i_enter_comments(String comment) {
+//        WebElement commentElement = driver.findElement(By.xpath(
+//                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[3]/div/div/div/div[2]/textarea"
+//        ));
+//        commentElement.sendKeys(comment);
+//    }
 
     @When("I click the Save button")
     public void i_click_the_save_button() {
