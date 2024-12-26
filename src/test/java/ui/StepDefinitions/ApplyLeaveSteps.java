@@ -108,7 +108,6 @@ public class ApplyLeaveSteps extends BaseSteps {
             case "monday" -> getWeekday();
             default -> 1;
         };
-        Integer dayAfterTomorrow = getDate(LocalDate.now().plusDays(2));
         WebElement dateElement = driver.findElement(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div[2]/div/div[2]/div/div[2]/div/div[3]/div["+date+"]"
         ));

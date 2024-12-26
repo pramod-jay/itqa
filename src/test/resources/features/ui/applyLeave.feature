@@ -22,7 +22,7 @@ Feature: Apply Leave
     And I enter a "today" as the from date
     And I enter a "day_after_tomorrow" as the to date
     Then I should see the Partial Days selector
-    And I enter comments as "Test Comment"
+    And I enter comments as "Leave Comment"
     Then I click the Apply button
     Then I should see a message with title "<title>" and message "<message>"
 
