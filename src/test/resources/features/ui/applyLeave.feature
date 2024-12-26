@@ -60,7 +60,7 @@ Feature: Apply Leave
     Then I should see the To time selector
     And I set To time as 2.00PM
     And I should see the Duration calculation
-    And I enter comments as "Test Comment"
+    And I enter comments as "Leave Comment"
     Then I click the Apply button
     Then I should see a message with title "<title>" and message "<message>"
 

@@ -167,9 +167,10 @@ public class ApplyLeaveSteps extends BaseSteps {
     @Step("Enter comments: {comment}")
     @When("I enter comments as {string}")
     public void i_enter_comments(String comment) {
-        WebElement commentElement = driver.findElement(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[4]/div/div/div/div[2]/textarea"
-        ));
+        WebElement commentElement = switch (comment) {
+            case"Leave Comment" -> driver.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[4]/div/div/div/div[2]/textarea"));
+            default -> driver.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[3]/div/div/div/div[2]/textarea")); //Qualifications comment
+        };
         commentElement.sendKeys(comment);
     }
 
