@@ -125,8 +125,6 @@ public class AddQualificationsSteps extends BaseSteps {
         date.click();
     }
 
-
-
     @When("I click the Qualifications Save button")
     public void i_click_the_save_button() {
         WebElement saveBtn = driver.findElement(By.xpath(
