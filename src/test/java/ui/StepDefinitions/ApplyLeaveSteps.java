@@ -26,7 +26,7 @@ public class ApplyLeaveSteps extends BaseSteps {
     @Step("Initialize WebDriverWait with a 10-second timeout")
     @Before
     public void setup() {
-        wait =  new WebDriverWait(driver, Duration.ofSeconds(10));;
+        wait =  new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     @Severity(SeverityLevel.CRITICAL)

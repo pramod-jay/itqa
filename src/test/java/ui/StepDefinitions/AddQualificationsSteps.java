@@ -132,13 +132,13 @@ public class AddQualificationsSteps extends BaseSteps {
 //        ));
 //        commentElement.sendKeys(comment);
 //    }
-
-    @When("I click the Save button")
-    public void i_click_the_save_button() {
-        WebElement saveBtn = driver.findElement(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[4]/button[2]"
-        ));
-        saveBtn.click();
-    }
+//
+//    @When("I click the Save button")
+//    public void i_click_the_save_button() {
+//        WebElement saveBtn = driver.findElement(By.xpath(
+//                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[4]/button[2]"
+//        ));
+//        saveBtn.click();
+//    }
     
 }
