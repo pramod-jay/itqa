@@ -28,3 +28,7 @@ Feature: Add qualifications
       | title   | message            |
       | Success | Successfully Saved |
 
+  Scenario: Unsuccessful work experience adding without required fields
+    When I click the Qualifications Save button
+    Then I should see the "Required" error below the required fields
+

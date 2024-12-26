@@ -132,5 +132,22 @@ public class AddQualificationsSteps extends BaseSteps {
         ));
         saveBtn.click();
     }
+
+    @Then("I should see the {string} error below the required fields")
+    public void i_should_see_the_error_below_the_required_fields(String error) {
+        //Company name
+        WebElement companyError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[1]/div/div[1]/div/span"
+        )));
+        assert companyError.isDisplayed() : "Company name error message is not displayed";
+        Assert.assertEquals(companyError.getText(), error);
+
+        //Job title
+        WebElement jobTitleError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[1]/div/div[2]/div/span"
+        )));
+        assert jobTitleError.isDisplayed() : "Job Title error message is not displayed";
+        Assert.assertEquals(jobTitleError.getText(), error);
+    }
     
 }
