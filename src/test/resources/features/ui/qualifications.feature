@@ -20,8 +20,8 @@ Feature: Add qualifications
     And I enter "Software engineer" in the job title field
     And I click date in the from date calender
     And I click date in the to date calender
-    And I enter comments as "Test comment"
-    When I click the Save button
+    And I enter comments as "Qualifications comment"
+    When I click the Qualifications Save button
     Then I should see a message with title "<title>" and message "<message>"
 
     Examples:

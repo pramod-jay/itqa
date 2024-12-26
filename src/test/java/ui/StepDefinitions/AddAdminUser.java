@@ -137,7 +137,7 @@ public class AddAdminUser extends BaseSteps {
     @When("I click the Save button")
     public void i_click_the_save_button() {
         WebElement saveButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//button[contains(@class, 'oxd-button') and contains(@class, 'oxd-button--medium') and contains(@class, 'oxd-button--secondary') and text()='Save']"
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/button[2]"
         )));
         saveButton.click();
     }
