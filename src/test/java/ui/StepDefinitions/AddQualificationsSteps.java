@@ -1,6 +1,7 @@
 package ui.StepDefinitions;
 
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
@@ -18,6 +19,7 @@ public class AddQualificationsSteps extends BaseSteps {
         wait =  new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
+    //Background to add qualification form
     @When("I click the My info button")
     public void i_click_the_my_info_button() {
         WebElement myInfoBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -35,7 +37,7 @@ public class AddQualificationsSteps extends BaseSteps {
     @When("I click the Qualifications button")
     public void i_click_the_qualifications_button() {
         WebElement qualificationsBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[1]/div[2]/div[10]/a"
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[1]/div[2]/div[9]/a"
         )));
         qualificationsBtn.click();
     }
@@ -64,5 +66,72 @@ public class AddQualificationsSteps extends BaseSteps {
 
         Assert.assertEquals(sectionTitle.getText(), "Add Work Experience");
     }
+
+    //Testing successful qualification adding
+    @Then("I enter {string} in the company field")
+    public void i_enter_in_the_company_field(String companyName) {
+        WebElement companyNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[1]/div/div[1]/div/div[2]/input"
+        )));
+        companyNameField.sendKeys(companyName);
+    }
+
+    @Then("I enter {string} in the job title field")
+    public void i_enter_in_the_job_title_field(String jobTitle) {
+        WebElement jobTitleField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[1]/div/div[2]/div/div[2]/input"
+        )));
+        jobTitleField.sendKeys(jobTitle);
+    }
+
+    @And("I click date in the from date calender")
+    public void i_click_date_in_the_from_date_calender() {
+        WebElement fromCalendarBtn = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[2]/div/div[1]/div/div[2]/div/div/i"
+        ));
+        fromCalendarBtn.click();
+
+        for(int i=0;i<4;i++) {
+            WebElement monthBackBtn = driver.findElement(By.xpath(
+                    "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[2]/div/div[1]/div/div[2]/div/div[2]/div/div[1]/button[1]"
+            ));
+            monthBackBtn.click();
+        }
+
+        WebElement date = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[2]/div/div[1]/div/div[2]/div/div[2]/div/div[3]/div[10]/div"
+        ));
+        date.click();
+
+    }
+
+    @And("I click date in the to date calender")
+    public void i_click_date_in_the_to_date_calender() {
+        WebElement toCalendarBtn = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[2]/div/div[2]/div/div[2]/div/div/i"
+        ));
+        toCalendarBtn.click();
+
+        for(int i=0;i<2;i++) {
+            WebElement monthBackBtn = driver.findElement(By.xpath(
+                    "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[2]/div/div[2]/div/div[2]/div/div[2]/div/div[1]/button[1]"
+            ));
+            monthBackBtn.click();
+        }
+
+        WebElement date = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[2]/div/div[2]/div/div[2]/div/div[2]/div/div[3]/div[10]/div"
+        ));
+        date.click();
+    }
+
+    @And("I enter comments as {string}")
+    public void i_enter_comments(String comment) {
+        WebElement commentElement = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[3]/div/div/div/div[2]/textarea"
+        ));
+        commentElement.sendKeys(comment);
+    }
+
 
 }
