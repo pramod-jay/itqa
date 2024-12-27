@@ -16,6 +16,8 @@ import org.testng.Assert;
 import ui.BaseSteps.BaseSteps;
 
 import java.time.Duration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ClaimSteps extends BaseSteps {
     @Severity(SeverityLevel.BLOCKER)
@@ -156,22 +158,83 @@ public class ClaimSteps extends BaseSteps {
         Assert.assertEquals(eventErrorMsg.getText(), "Already exists");
     }
 
+    @When("I click Submit Claim button")
+    public void i_click_submit_claim_button() {
+        WebElement claimSubmitBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[1]/header/div[2]/nav/ul/li[2]"
+        )));
+        claimSubmitBtn.click();
+    }
+    @Then("I should see Create Claim Request screen")
+    public void i_should_see_create_claim_request_screen() {
+        wait.until(ExpectedConditions.urlToBe("https://opensource-demo.orangehrmlive.com/web/index.php/claim/submitClaim"));
 
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertEquals(currentUrl, "https://opensource-demo.orangehrmlive.com/web/index.php/claim/submitClaim");
 
-    //need to include the elements
-//    @Then("I should see a message with title {string} and message {string} on event screen")
-//    public void i_should_see_a_message_with_title_and_message_on_event_screen(String eventMsgTitle, String eventMsg) {
-//        WebElement eventMsgTitleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-//                "//*[@id=\"oxd-toaster_1\"]/div/div[1]/div[2]/p[1]"
-//        )));
-//        assert eventMsgTitleElement.isDisplayed() : "Message element is not displayed on add event screen";
-//
-//        WebElement titleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-//                "//*[@id=\"oxd-toaster_1\"]/div/div[1]/div[2]/p[1]"
-//        )));
-//        Assert.assertEquals(titleElement.getText(), eventMsgTitle);
-//
-//        WebElement eventMsgElement = driver.findElement(By.xpath("//*[@id=\"oxd-toaster_1\"]/div/div[1]/div[2]/p[2]"));
-//        Assert.assertEquals(eventMsgElement.getText(), eventMsg);
-//    }
+        WebElement submitClaimHeader = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/h6"
+        )));
+        Assert.assertEquals(submitClaimHeader.getText(),"Create Claim Request");
+    }
+    @Then("I select event Travel Allowance from dropdown")
+    public void i_select_event_travel_allowance_from_dropdown() {
+
+        WebElement eventSelection = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
+        )));
+        eventSelection.click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
+        )));
+        WebElement eventSelectionItem = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[5]"
+        )));
+
+        eventSelectionItem.click();
+
+    }
+    @Then("I select Sri Lankan rupee as currency from the given dropdown")
+    public void i_select_sri_lankan_rupee_as_currency_from_the_given_dropdown() {
+        WebElement currencySelection = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[2]/div/div[2]/div/div"
+        )));
+        currencySelection.click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[2]/div/div[2]/div/div[2]"
+        )));
+        WebElement currencySelectionItem = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[2]/div/div[2]/div/div[2]/div[132]/span"
+        ));
+        currencySelectionItem.click();
+    }
+
+    @Then("I should enter remark as {string}")
+    public void i_should_enter_remark_as(String createClaimRemark) {
+        WebElement createClaimRemarkElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[2]/div/div/div/div[2]/textarea"
+        )));
+        createClaimRemarkElement.sendKeys(createClaimRemark);
+    }
+    @Then("I click Claim request Create button")
+    public void i_click_claim_request_create_button() {
+        WebElement createClaimBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/button[2]"
+        )));
+        createClaimBtn.click();
+    }
+    @Then("I should see submitted claim with a reference Id")
+    public void i_should_see_submitted_claim_with_a_reference_id() {
+        WebElement refID = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div[1]/form/div[1]/div/div[1]/div/div[2]/input"
+        )));
+
+        String ref = refID.getDomProperty("value");
+        Assert.assertNotEquals(ref,null);
+        String id = ref.substring(ref.length() - 2);
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertEquals(currentUrl, "https://opensource-demo.orangehrmlive.com/web/index.php/claim/submitClaim/id/"+id);
+    }
 }
