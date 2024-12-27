@@ -42,6 +42,22 @@ Feature: Claim
     When I enter "Fuel Allowance" for Event Name
     Then I should see a Already exists error message below Event Name field
 
+  Scenario Outline: Creating a Claim Request
+    When I click Submit Claim button
+    Then I should see Create Claim Request screen
+    And I select event Travel Allowance from dropdown
+    And I select Sri Lankan rupee as currency from the given dropdown
+    Then I should enter remark as "Travel Allowance Remark"
+    And I click Claim request Create button
+    Then I should see a message with title "<title>" and message "<message>"
+    Then I should see submitted claim with a reference Id
+
+    Examples:
+      | title   | message            |
+      | Success | Successfully Saved |
+
+
+
 
 
 
