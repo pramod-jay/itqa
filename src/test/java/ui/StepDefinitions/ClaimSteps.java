@@ -237,4 +237,21 @@ public class ClaimSteps extends BaseSteps {
         String currentUrl = driver.getCurrentUrl();
         Assert.assertEquals(currentUrl, "https://opensource-demo.orangehrmlive.com/web/index.php/claim/submitClaim/id/"+id);
     }
+
+    @Then("I should see {string} error messages below Event and Currency fields")
+    public void i_should_see_error_messages_below_event_and_currency_fields(String requiredMsg) {
+        //Events
+        WebElement eventSelectionError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/span"
+        )));
+        assert eventSelectionError.isDisplayed() : "Leave type error message element is not displayed";
+        Assert.assertEquals(eventSelectionError.getText(), requiredMsg);
+
+        //Currency
+        WebElement currencySelectionError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[2]/div/span"
+        )));
+        assert  currencySelectionError.isDisplayed(): "Currency selection error message element is not displayed";
+        Assert.assertEquals(currencySelectionError.getText(),requiredMsg);
+    }
 }
