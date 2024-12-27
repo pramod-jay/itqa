@@ -105,18 +105,27 @@ public class AddQualificationsSteps extends BaseSteps {
 
     }
 
-    @And("I click date in the to date calender")
-    public void i_click_date_in_the_to_date_calender() {
+    @And("I click {string} in the to date calender")
+    public void i_click_date_in_the_to_date_calender(String datePosition) {
         WebElement toCalendarBtn = driver.findElement(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[2]/div/div[2]/div/div[2]/div/div/i"
         ));
         toCalendarBtn.click();
 
-        for(int i=0;i<2;i++) {
-            WebElement monthBackBtn = driver.findElement(By.xpath(
-                    "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[2]/div/div[2]/div/div[2]/div/div[2]/div/div[1]/button[1]"
-            ));
-            monthBackBtn.click();
+        if(datePosition.equals("afterDate")) {
+            for (int i = 0; i < 2; i++) {
+                WebElement monthBackBtn = driver.findElement(By.xpath(
+                        "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[2]/div/div[2]/div/div[2]/div/div[2]/div/div[1]/button[1]"
+                ));
+                monthBackBtn.click();
+            }
+        } else if (datePosition.equals("beforeDate")) {
+            for (int i = 0; i < 6; i++) {
+                WebElement monthBackBtn = driver.findElement(By.xpath(
+                        "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[2]/div/div[2]/div/div[2]/div/div[2]/div/div[1]/button[1]"
+                ));
+                monthBackBtn.click();
+            }
         }
 
         WebElement date = driver.findElement(By.xpath(
@@ -135,19 +144,28 @@ public class AddQualificationsSteps extends BaseSteps {
 
     @Then("I should see the {string} error below the required fields")
     public void i_should_see_the_error_below_the_required_fields(String error) {
-        //Company name
-        WebElement companyError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[1]/div/div[1]/div/span"
-        )));
-        assert companyError.isDisplayed() : "Company name error message is not displayed";
-        Assert.assertEquals(companyError.getText(), error);
+        if(error.equals("Required")) {
+            //Company name
+            WebElement companyError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                    "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[1]/div/div[1]/div/span"
+            )));
+            assert companyError.isDisplayed() : "Company name error message is not displayed";
+            Assert.assertEquals(companyError.getText(), error);
 
-        //Job title
-        WebElement jobTitleError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[1]/div/div[2]/div/span"
-        )));
-        assert jobTitleError.isDisplayed() : "Job Title error message is not displayed";
-        Assert.assertEquals(jobTitleError.getText(), error);
+            //Job title
+            WebElement jobTitleError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                    "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[1]/div/div[2]/div/span"
+            )));
+            assert jobTitleError.isDisplayed() : "Job Title error message is not displayed";
+            Assert.assertEquals(jobTitleError.getText(), error);
+        } else if (error.equals("To date should be after from date")) {
+            //To date
+            WebElement invalidToDateError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                    "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div[1]/form/div[2]/div/div[2]/div/span"
+            )));
+            assert invalidToDateError.isDisplayed() : "Invalid to date error message is not displayed";
+            Assert.assertEquals(invalidToDateError.getText(), error);
+        }
     }
     
 }
