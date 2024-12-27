@@ -19,7 +19,7 @@ Feature: Add qualifications
     Then I enter "ABC company" in the company field
     And I enter "Software engineer" in the job title field
     And I click date in the from date calender
-    And I click date in the to date calender
+    And I click "afterDate" in the to date calender
     And I enter comments as "Qualifications comment"
     When I click the Qualifications Save button
     Then I should see a message with title "<title>" and message "<message>"
@@ -32,3 +32,7 @@ Feature: Add qualifications
     When I click the Qualifications Save button
     Then I should see the "Required" error below the required fields
 
+  Scenario: Unsuccessful work experience save with from date after to date
+    Then I click date in the from date calender
+    And I click "beforeDate" in the to date calender
+    Then I should see the "To date should be after from date" error below the required fields
