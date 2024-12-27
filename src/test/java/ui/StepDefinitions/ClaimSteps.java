@@ -148,6 +148,16 @@ public class ClaimSteps extends BaseSteps {
         addEventSave.click();
     }
 
+      @Then("I should see a Already exists error message below Event Name field")
+    public void i_should_see_a_already_exists_error_message_below_event_name_field() {
+        WebElement eventErrorMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div[1]/div/span"
+        )));
+        Assert.assertEquals(eventErrorMsg.getText(), "Already exists");
+    }
+
+
+
     //need to include the elements
 //    @Then("I should see a message with title {string} and message {string} on event screen")
 //    public void i_should_see_a_message_with_title_and_message_on_event_screen(String eventMsgTitle, String eventMsg) {

@@ -33,6 +33,15 @@ Feature: Claim
       | title   | message            |
       | Success | Successfully Saved |
 
+  Scenario: Adding an event that already exist
+    When I click Configuration dropdown
+    And select Events
+    Then I should see Events screen
+    And I click Add button on Events screen
+    Then I should see Add Event screen
+    When I enter "Fuel Allowance" for Event Name
+    Then I should see a Already exists error message below Event Name field
+
 
 
 
