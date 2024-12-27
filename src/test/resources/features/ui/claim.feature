@@ -56,6 +56,13 @@ Feature: Claim
       | title   | message            |
       | Success | Successfully Saved |
 
+  Scenario: Creating claim unsuccessfully without required data
+    When I click Submit Claim button
+    Then I should see Create Claim Request screen
+    And I click Claim request Create button
+    Then I should see "Required" error messages below Event and Currency fields
+
+
 
 
 
