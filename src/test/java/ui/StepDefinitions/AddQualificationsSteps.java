@@ -192,21 +192,51 @@ public class AddQualificationsSteps extends BaseSteps {
         )));
         dropDownBtn.click();
 
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[1]"
+        )));
+        WebElement dropdownItem = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[4]"
+        ));
+        dropdownItem.click();
+
     }
     @Then("I select a fluency")
     public void i_select_a_fluency() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[2]/div/div[2]/div/div/div[2]/i"
+        )));
+        dropDownBtn.click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[2]/div/div[2]/div/div[2]/div[1]"
+        )));
+        WebElement dropdownItem = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[2]/div/div[2]/div/div[2]/div[2]"
+        ));
+        dropdownItem.click();
     }
     @Then("I select a competency")
     public void i_select_a_competency() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[3]/div/div[2]/div/div/div[2]/i"
+        )));
+        dropDownBtn.click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[3]/div/div[2]/div/div[2]/div[1]"
+        )));
+        WebElement dropdownItem = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[3]/div/div[2]/div/div[2]/div[4]"
+        ));
+        dropdownItem.click();
     }
     @When("I click the language Save button")
     public void i_click_the_language_save_button() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        WebElement saveBtn = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[3]/button[2]"
+        ));
+        saveBtn.click();
     }
 
 
