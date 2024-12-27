@@ -167,5 +167,77 @@ public class AddQualificationsSteps extends BaseSteps {
             Assert.assertEquals(invalidToDateError.getText(), error);
         }
     }
-    
+
+    @When("I click language add button")
+    public void i_click_language_add_button() {
+        WebElement addLanguageBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/div/button"
+        )));
+        addLanguageBtn.click();
+    }
+
+    @Then("I should see the language adding section")
+    public void i_should_see_the_language_adding_section() {
+        WebElement sectionTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/h6"
+        )));
+        assert sectionTitle.isDisplayed() : "Section is not opened";
+
+        Assert.assertEquals(sectionTitle.getText(), "Add Language");
+    }
+    @Then("I select a language")
+    public void i_select_a_language() {
+        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[1]/div/div[2]/div/div/div[2]/i"
+        )));
+        dropDownBtn.click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[1]"
+        )));
+        WebElement dropdownItem = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[4]"
+        ));
+        dropdownItem.click();
+
+    }
+    @Then("I select a fluency")
+    public void i_select_a_fluency() {
+        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[2]/div/div[2]/div/div/div[2]/i"
+        )));
+        dropDownBtn.click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[2]/div/div[2]/div/div[2]/div[1]"
+        )));
+        WebElement dropdownItem = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[2]/div/div[2]/div/div[2]/div[2]"
+        ));
+        dropdownItem.click();
+    }
+    @Then("I select a competency")
+    public void i_select_a_competency() {
+        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[3]/div/div[2]/div/div/div[2]/i"
+        )));
+        dropDownBtn.click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[3]/div/div[2]/div/div[2]/div[1]"
+        )));
+        WebElement dropdownItem = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[1]/div/div[3]/div/div[2]/div/div[2]/div[4]"
+        ));
+        dropdownItem.click();
+    }
+    @When("I click the language Save button")
+    public void i_click_the_language_save_button() {
+        WebElement saveBtn = driver.findElement(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[5]/div[1]/form/div[3]/button[2]"
+        ));
+        saveBtn.click();
+    }
+
+
 }
