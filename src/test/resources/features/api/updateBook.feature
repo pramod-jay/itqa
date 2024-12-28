@@ -17,5 +17,11 @@ Feature: updateBook
       |id | title                         | author      |
       | 1 | Harry Potter - Goblet of Fire | J.K.Rowling |
 
-
+  Scenario: Fail to update a book with invalid ID
+#    Given no book exists in the system with ID 1900
+    When I send a PUT request to "api/books/" with following details:
+      |id    | title          | author      |
+      |1900  | Les Miserables | Victor Hugo |
+    Then the response of the status code should be 404
+    And the error message should be "Book not found"
 
