@@ -8,6 +8,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.qameta.allure.*;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 import java.util.ArrayList;
@@ -33,15 +34,19 @@ public class DeleteBookSteps {
         String adminUsername = ConfigUtil.get("admin.username");
         String adminPassword = ConfigUtil.get("admin.password");
 
-        String requestBody = "{\"title\":\"Test Book for Delete\",\"author\":\"Test Author\"}";
+        String requestBody = "{ \"title\": \"New Book\", \"author\": \"New Author\" }";
         Response createResponse = RestAssured
                 .given()
                 .auth()
                 .preemptive()
                 .basic(adminUsername, adminPassword)
-                .header("Content-Type", "application/json")
+                .contentType(ContentType.JSON)
                 .body(requestBody)
-                .post(baseUrl + "/api/books");
+                .when()
+                .post(baseUrl + "api/books")
+                .then()
+                .extract()
+                .response();
 
         if (createResponse.getStatusCode() == 201) {
             int createdBookId = createResponse.jsonPath().getInt("id");
@@ -56,8 +61,8 @@ public class DeleteBookSteps {
     @Step("Cleaning up data for Delete API tests")
     public void teardown() {
         System.out.println("Cleaning up data for Delete API tests...");
-        String adminUsername = ConfigUtil.get("admin.username");
-        String adminPassword = ConfigUtil.get("admin.password");
+        String adminUsername = ConfigUtil.get("user.username");
+        String adminPassword = ConfigUtil.get("user.password");
 
         for (int bookId : createdBookIds) {
             RestAssured
@@ -133,8 +138,7 @@ public class DeleteBookSteps {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verifies that the response status code matches the expected value")
     public void theResponseStatusCodeShouldBe(int expectedStatusCode) {
-        assertEquals(response.getStatusCode(), expectedStatusCode,
-                "Test failed: Expected status code was [" + expectedStatusCode + "], but actual status code was [" + response.getStatusCode() + "]");
+        assertEquals(response.getStatusCode(), expectedStatusCode);
     }
 
     @Then("the delete response should include a message {string}")
@@ -142,9 +146,8 @@ public class DeleteBookSteps {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verifies that the response message matches the expected value")
     public void theResponseShouldIncludeAMessage(String expectedMessage) {
-        String actualMessage = response.jsonPath().getString("message");
-        assertEquals(actualMessage, expectedMessage,
-                "Test failed: Expected message was [" + expectedMessage + "], but actual message was [" + actualMessage + "]");
+        String actualMessage = response.getBody().asString();
+        assertEquals(actualMessage, expectedMessage);
     }
 
     @Given("I have the base API endpoint {string}")
