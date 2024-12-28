@@ -31,10 +31,14 @@ Feature: updateBook
         | id    | title | author |
         | 1     |       |        |
       Then the response of the status code should be 400
-      And the error message should be "Invalid or Empty Input Parameters in the Request"
+      And the error message should be "Invalid | Empty Input Parameters in the Request"
 
-
-
-
+  Scenario: Unauthorized attempt to update a book
+    Given a book exist in the system with ID 1
+    When I send a PUT request to "api/books/" with following details with username as "user" with password "password":
+      | id    | title                          | author     |
+      | 1     | Adventures of Huckleberry Finn | Mark Twain |
+    Then the response of the status code should be 403
+    And the error message should be "User is not permitted."
 
 
