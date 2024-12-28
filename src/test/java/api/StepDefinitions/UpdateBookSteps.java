@@ -92,5 +92,27 @@ public class UpdateBookSteps {
         System.out.println(response.getBody().prettyPrint());
     }
 
+    @When("I send a PUT request to {string} with following details with username as {string} with password {string}:")
+    public void i_send_a_put_request_to_with_following_details_with_username_as_with_password(String endPoint, String userName, String password, io.cucumber.datatable.DataTable bookTable) {
+        // Map the data table to a BookDetails object
+        bookDetailsList = bookTable.asList(BookDetails.class);
+
+        // Get the book details to update
+        bookDetails = bookDetailsList.get(0);
+
+        // Send the PUT request with the book details as JSON
+        response = io.restassured.RestAssured.given()
+                .baseUri(baseUrl)
+                .header("Content-Type", "application/json")
+                .auth().basic("user", "password")
+                .body(bookDetails) // Automatically serializes the object to JSON
+                .when()
+                .put(baseUrl + endPoint + bookDetails.getId()); // Append the ID to the endpoint
+
+        // Output the response for debugging
+        System.out.println("Response: " + response.getBody().asString());
+    }
+
+
 }
 
