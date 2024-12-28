@@ -27,6 +27,7 @@ public class DeleteBookSteps {
     private final List<Integer> createdBookIds = new ArrayList<>(); // Track created books for cleanup
 
     @Before("@DeleteTest")
+    @Step("Setting up data for Delete API tests")
     public void setup() {
         System.out.println("Setting up data for Delete API tests...");
         String adminUsername = ConfigUtil.get("admin.username");
@@ -52,6 +53,7 @@ public class DeleteBookSteps {
     }
 
     @After("@DeleteTest")
+    @Step("Cleaning up data for Delete API tests")
     public void teardown() {
         System.out.println("Cleaning up data for Delete API tests...");
         String adminUsername = ConfigUtil.get("admin.username");
@@ -71,6 +73,7 @@ public class DeleteBookSteps {
     }
 
     @Given("I am logged in as {string}")
+    @Step("Log in as user role: {role}")
     public void iAmLoggedInAs(String role) {
         if (role.equalsIgnoreCase("admin")) {
             username = ConfigUtil.get("admin.username");
@@ -84,6 +87,7 @@ public class DeleteBookSteps {
     }
 
     @Given("the delete book details are:")
+    @Step("Providing delete book details: {bookDetails}")
     public void theBookDetailsAre(Map<String, String> bookDetails) {
         String requestBody = String.format(
                 "{\"id\": \"%s\", \"title\": \"%s\", \"author\": \"%s\"}",
@@ -102,6 +106,7 @@ public class DeleteBookSteps {
     }
 
     @When("I send a DELETE request to {string}")
+    @Step("Sending DELETE request to endpoint: {endpoint}")
     public void iSendADeleteRequestTo(String endpoint) {
         System.out.println(username);
         this.response = RestAssured
@@ -113,6 +118,7 @@ public class DeleteBookSteps {
     }
 
     @When("I send a DELETE request to {string} with username {string} and password {string}")
+    @Step("Sending DELETE request to endpoint: {endpoint} with username: {username}")
     public void iSendADeleteRequestToWithCredentials(String endpoint, String username, String password) {
         this.response = RestAssured
                 .given()
@@ -123,12 +129,18 @@ public class DeleteBookSteps {
     }
 
     @Then("the delete response status code should be {int}")
+    @Step("Verify response status code is {expectedStatusCode}")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verifies that the response status code matches the expected value")
     public void theResponseStatusCodeShouldBe(int expectedStatusCode) {
         assertEquals(response.getStatusCode(), expectedStatusCode,
                 "Test failed: Expected status code was [" + expectedStatusCode + "], but actual status code was [" + response.getStatusCode() + "]");
     }
 
     @Then("the delete response should include a message {string}")
+    @Step("Verify response includes message: {expectedMessage}")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verifies that the response message matches the expected value")
     public void theResponseShouldIncludeAMessage(String expectedMessage) {
         String actualMessage = response.jsonPath().getString("message");
         assertEquals(actualMessage, expectedMessage,
@@ -136,6 +148,7 @@ public class DeleteBookSteps {
     }
 
     @Given("I have the base API endpoint {string}")
+    @Step("Set base API endpoint: {endpoint}")
     public void iHaveTheBaseApiEndpoint(String endpoint) {
         RestAssured.basePath = endpoint;
     }
