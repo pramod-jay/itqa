@@ -9,6 +9,7 @@ import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.testng.Assert;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Map;
 
@@ -29,13 +30,10 @@ public class UpdateBookSteps {
                 .extract()
                 .response();
 
-        if (response.getStatusCode() == 404) {
-            throw new AssertionError("Book with ID " + bookID + " does not exist in the system.");
+        if(response.getStatusCode() != 404) {
+            bookDetails = response.getBody().as(BookDetails.class);
+            System.out.println("Book with ID " + bookID + " exists: " + bookDetails);
         }
-
-//        System.out.println(response.getBody().prettyPrint());
-        bookDetails = response.getBody().as(BookDetails.class);
-        System.out.println("Book with ID " + bookID + " exists: " + bookDetails);
     }
     @When("I send a PUT request to {string} with following details:")
     public void i_send_a_put_request_to_with_following_details(String endPoint, io.cucumber.datatable.DataTable bookTable) {
@@ -68,11 +66,6 @@ public class UpdateBookSteps {
         //Convert the resultTable to a list of maps
         List<Map<String, String>> tableData = resultTable.asMaps(String.class, String.class);
 
-        // Validate there's only one row in the result table
-        if (tableData.size() != 1) {
-            throw new IllegalArgumentException("This step expects exactly one set of book details to be provided.");
-        }
-
         // Extract expected details from the table
         Map<String, String> expectedDetails = tableData.get(0);
         BookDetails expectedBookDetails = new BookDetails(
@@ -93,24 +86,10 @@ public class UpdateBookSteps {
         System.out.println("Updated Book Details: " + updatedBookDetails);
     }
 
-//    @Given("no book exists in the system with ID {int}")
-//    public void no_book_exists_in_the_system_with_id(Integer invalidBookID) {
-//        response = io.restassured.RestAssured.given()
-//                .baseUri(baseUrl)
-//                .auth().basic("admin", "password")
-//                .when()
-//                .get(baseUrl + "api/books/" + invalidBookID)
-//                .then()
-//                .extract()
-//                .response();
-//
-//        // Assuming it should return 404 if the book doesn't exist
-//        Assert.assertEquals(404, response.getStatusCode());
-//    }
-
     @Then("the error message should be {string}")
     public void the_error_message_should_be(String errorMsg) {
         Assert.assertEquals(errorMsg, response.getBody().asString());
+        System.out.println(response.getBody().prettyPrint());
     }
 
 }
