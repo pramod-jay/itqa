@@ -14,4 +14,43 @@ public class BookDetails {
         this.title = title;
         this.author = author;
     }
+
+    // Getter for id
+    public Integer getId() {
+        return id;
+    }
+
+    // Getter for title
+    public String getTitle() {
+        return title;
+    }
+
+    // Getter for author
+    public String getAuthor() {
+        return author;
+    }
+
+    // Setter for id
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    // Setter for title
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    // Setter for author
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "BookDetails{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                '}';
+    }
 }
