@@ -92,4 +92,26 @@ public class UpdateBookSteps {
         // Print the actual book details for debugging
         System.out.println("Updated Book Details: " + updatedBookDetails);
     }
+
+//    @Given("no book exists in the system with ID {int}")
+//    public void no_book_exists_in_the_system_with_id(Integer invalidBookID) {
+//        response = io.restassured.RestAssured.given()
+//                .baseUri(baseUrl)
+//                .auth().basic("admin", "password")
+//                .when()
+//                .get(baseUrl + "api/books/" + invalidBookID)
+//                .then()
+//                .extract()
+//                .response();
+//
+//        // Assuming it should return 404 if the book doesn't exist
+//        Assert.assertEquals(404, response.getStatusCode());
+//    }
+
+    @Then("the error message should be {string}")
+    public void the_error_message_should_be(String errorMsg) {
+        Assert.assertEquals(errorMsg, response.getBody().asString());
+    }
+
 }
+
