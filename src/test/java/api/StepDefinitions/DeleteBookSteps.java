@@ -8,6 +8,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.qameta.allure.*;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class DeleteBookSteps {
     private String password;
     private Response response;
     private final List<Integer> createdBookIds = new ArrayList<>(); // Track created books for cleanup
+    private int createdBookId;
 
     @Before("@DeleteTest")
     @Step("Setting up data for Delete API tests")
@@ -33,20 +35,26 @@ public class DeleteBookSteps {
         String adminUsername = ConfigUtil.get("admin.username");
         String adminPassword = ConfigUtil.get("admin.password");
 
-        String requestBody = "{\"title\":\"Test Book for Delete\",\"author\":\"Test Author\"}";
+        String dynamicBookTitle = "Test Book " + System.currentTimeMillis();
+        String requestBody = String.format("{ \"title\": \"%s\", \"author\": \"Dynamic Author\" }", dynamicBookTitle);
         Response createResponse = RestAssured
                 .given()
                 .auth()
                 .preemptive()
                 .basic(adminUsername, adminPassword)
-                .header("Content-Type", "application/json")
+                .contentType(ContentType.JSON)
                 .body(requestBody)
-                .post(baseUrl + "/api/books");
+                .when()
+                .post(baseUrl + "api/books")
+                .then()
+                .extract()
+                .response();
 
         if (createResponse.getStatusCode() == 201) {
-            int createdBookId = createResponse.jsonPath().getInt("id");
+            createdBookId = createResponse.jsonPath().getInt("id");
             createdBookIds.add(createdBookId); // Track the created book ID
             System.out.println("Created book for testing: ID " + createdBookId);
+            System.out.println(createdBookIds);
         } else {
             System.err.println("Failed to create test book. Status code: " + createResponse.getStatusCode());
         }
@@ -56,8 +64,8 @@ public class DeleteBookSteps {
     @Step("Cleaning up data for Delete API tests")
     public void teardown() {
         System.out.println("Cleaning up data for Delete API tests...");
-        String adminUsername = ConfigUtil.get("admin.username");
-        String adminPassword = ConfigUtil.get("admin.password");
+        String adminUsername = ConfigUtil.get("user.username");
+        String adminPassword = ConfigUtil.get("user.password");
 
         for (int bookId : createdBookIds) {
             RestAssured
@@ -133,23 +141,19 @@ public class DeleteBookSteps {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verifies that the response status code matches the expected value")
     public void theResponseStatusCodeShouldBe(int expectedStatusCode) {
-        assertEquals(response.getStatusCode(), expectedStatusCode,
-                "Test failed: Expected status code was [" + expectedStatusCode + "], but actual status code was [" + response.getStatusCode() + "]");
+        assertEquals(response.getStatusCode(), expectedStatusCode);
     }
 
-    @Then("the delete response should include a message {string}")
-    @Step("Verify response includes message: {expectedMessage}")
-    @Severity(SeverityLevel.NORMAL)
-    @Description("Verifies that the response message matches the expected value")
-    public void theResponseShouldIncludeAMessage(String expectedMessage) {
-        String actualMessage = response.jsonPath().getString("message");
-        assertEquals(actualMessage, expectedMessage,
-                "Test failed: Expected message was [" + expectedMessage + "], but actual message was [" + actualMessage + "]");
-    }
+    @When("I send a DELETE request to the dynamically created book")
+    @Step("Sending DELETE request to dynamically created book with ID: {createdBookId}")
+    public void iSendADeleteRequestToDynamicallyCreatedBook() {
+        response = RestAssured
+                .given()
+                .auth()
+                .preemptive()
+                .basic(username, password)
+                .delete(baseUrl + "api/books/" + createdBookId);
 
-    @Given("I have the base API endpoint {string}")
-    @Step("Set base API endpoint: {endpoint}")
-    public void iHaveTheBaseApiEndpoint(String endpoint) {
-        RestAssured.basePath = endpoint;
+        System.out.println("Sent DELETE request for book ID: " + createdBookId);
     }
 }
