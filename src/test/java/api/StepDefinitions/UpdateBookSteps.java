@@ -6,6 +6,9 @@ import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.testng.Assert;
 
@@ -19,6 +22,8 @@ public class UpdateBookSteps {
     private BookDetails bookDetails;
     List<BookDetails> bookDetailsList;
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Step("Verify if a book exists in the system with ID {bookID}")
     @Given("a book exist in the system with ID {int}")
     public void a_book_exist_in_the_system_with_id(Integer bookID) {
         response = io.restassured.RestAssured.given()
@@ -35,6 +40,9 @@ public class UpdateBookSteps {
             System.out.println("Book with ID " + bookID + " exists: " + bookDetails);
         }
     }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Step("Verify if a book exists in the system with ID {bookID}")
     @When("I send a PUT request to {string} with following details:")
     public void i_send_a_put_request_to_with_following_details(String endPoint, io.cucumber.datatable.DataTable bookTable) {
         // Map the data table to a BookDetails object
@@ -56,11 +64,17 @@ public class UpdateBookSteps {
         System.out.println("Response: " + response.getBody().asString());
 
     }
+
+    @Severity(SeverityLevel.BLOCKER)
+    @Step("Verify the response status code is {updateStatusCode}")
     @Then("the response of the status code should be {int}")
     public void the_response_of_the_status_code_should_be(Integer updateStatusCode) {
         Assert.assertEquals(updateStatusCode, response.getStatusCode());
 
     }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Step("Validate the updated book details in the response")
     @Then("the response should include the updated book details:")
     public void the_response_should_include_the_updated_book_details(io.cucumber.datatable.DataTable resultTable) {
         //Convert the resultTable to a list of maps
@@ -86,12 +100,16 @@ public class UpdateBookSteps {
         System.out.println("Updated Book Details: " + updatedBookDetails);
     }
 
+    @Severity(SeverityLevel.MINOR)
+    @Step("Verify the error message is {errorMsg}")
     @Then("the error message should be {string}")
     public void the_error_message_should_be(String errorMsg) {
         Assert.assertEquals(errorMsg, response.getBody().asString());
         System.out.println(response.getBody().prettyPrint());
     }
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Step("Send a PUT request as user {userName} to update book details")
     @When("I send a PUT request to {string} with following details with username as {string} with password {string}:")
     public void i_send_a_put_request_to_with_following_details_with_username_as_with_password(String endPoint, String userName, String password, io.cucumber.datatable.DataTable bookTable) {
         // Map the data table to a BookDetails object
