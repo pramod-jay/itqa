@@ -41,7 +41,7 @@ jobs:
         CHROME_VERSION=$(google-chrome --version | grep -oP "\d+\.\d+\.\d+")
         wget https://storage.googleapis.com/chrome-for-testing-public/131.0.6778.204/linux64/chromedriver-linux64.zip
         unzip chromedriver-linux64.zip
-        sudo mv chromedriver /usr/bin/chromedriver
+        sudo mv chromedriver-linux64/chromedriver /usr/bin/chromedriver
         sudo chmod +x /usr/bin/chromedriver
 
 
