@@ -11,8 +11,10 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.And;
 import org.openqa.selenium.By;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -180,19 +182,27 @@ public class AddAdminUser extends BaseSteps {
 //    Validation error when required fields are left empty
 
     @Then("I leave the user role field empty")
-    public void iLeaveTheUserRoleFieldEmpty() {
-        WebElement userRoleField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div/input"
+    public void iLeaveTheUserRoleDropdownEmpty() {
+        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
         )));
-        userRoleField.sendKeys("");
+        dropDownBtn.click();
+
+        // Close dropdown by clicking outside or pressing escape
+        Actions action = new Actions(driver);
+        action.sendKeys(Keys.ESCAPE).perform();  // Simulate pressing escape to close the dropdown
     }
 
     @And("I leave the status field empty")
-    public void iLeaveTheStatusFieldEmpty() {
-        WebElement statusField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[3]/div/div[2]/input"
+    public void iLeaveTheStatusDropdownEmpty() {
+        WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[3]/div/div[2]"
         )));
-        statusField.sendKeys("");
+        dropDownBtn.click();
+
+        // Close dropdown without selecting any item
+        Actions action = new Actions(driver);
+        action.sendKeys(Keys.ESCAPE).perform();
     }
 
     @And("I leave the employee name field empty")
@@ -228,6 +238,7 @@ public class AddAdminUser extends BaseSteps {
     }
 
 
+
     @Then("I should see {string} validation errors for all general fields")
     public void iShouldSeeValidationErrorsForAllGeneralFields(String validationMessage) {
         List<WebElement> validationErrors = driver.findElements(By.xpath("//span[@class='oxd-text oxd-text--span oxd-input-field-error-message']"));
@@ -243,4 +254,5 @@ public class AddAdminUser extends BaseSteps {
         )));
         Assert.assertEquals(confirmPasswordError.getText(), validationMessage);
     }
+
 }
