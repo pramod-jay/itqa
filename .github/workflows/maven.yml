@@ -73,7 +73,9 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       if: always()
       with:
-        personal_token: ${{ secrets.PAT }}  # Instead of GITHUB_TOKEN
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        # OR for Personal Access Token (PAT):
+        # personal_token: ${{ secrets.PAT_TOKEN }}
         publish_branch: gh-pages
         publish_dir: allure-history
 
