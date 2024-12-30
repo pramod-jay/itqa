@@ -32,6 +32,8 @@ Feature: updateBook
         | 1     |       |        |
       Then the response of the status code should be 400
       And the error message should be "Invalid | Empty Input Parameters in the Request"
+#    And the error message should be "Mandatory parameters should not be null"
+
 
   Scenario: Unauthorized attempt to update a book
     Given a book exist in the system with ID 1

@@ -23,7 +23,7 @@ Feature: Claim
     Then I should see Events screen
     And I click Add button on Events screen
     Then I should see Add Event screen
-    Then I enter "Fuel Allowance4" for Event Name
+    Then I enter "Fuel Allowance5" for Event Name
     And I enter "Allowance for fuel 2" for Description
     And I press the toggle
     And I click event Save button
@@ -39,7 +39,7 @@ Feature: Claim
     Then I should see Events screen
     And I click Add button on Events screen
     Then I should see Add Event screen
-    When I enter "Fuel Allowance" for Event Name
+    When I enter "Fuel Allowance5" for Event Name
     Then I should see a Already exists error message below Event Name field
 
   Scenario Outline: Creating a Claim Request
