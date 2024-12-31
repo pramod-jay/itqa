@@ -7,6 +7,6 @@ Feature: get book by id
   Scenario: Successfully fetching a book by valid id
     Given the valid book id 1
     When I send a GET request to "api/books"
-    Then the response should include the book details:
+    Then the response should include the referred book details:
       | id | title        | author      |
-      | 1  | Animal Farm | George Orwell |
+      | 1  | Harry Potter | J.K.Rowling |
