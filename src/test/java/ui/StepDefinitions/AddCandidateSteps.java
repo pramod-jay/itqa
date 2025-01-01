@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.testng.AssertJUnit.assertEquals;
+import java.nio.file.Paths;
 
 public class AddCandidateSteps extends BaseSteps {
     @Severity(SeverityLevel.BLOCKER)
@@ -135,7 +136,8 @@ public class AddCandidateSteps extends BaseSteps {
         uploadDiv.click();
     
         WebElement fileInput = driver.findElement(By.xpath(fileInputXpath));
-        String filePath = System.getProperty("user.dir") + "\\src\\test\\resources\\" + fileName;
+        String filePath = Paths.get(System.getProperty("user.dir"), fileName).toString();
+
         fileInput.sendKeys(filePath);
     }
 
