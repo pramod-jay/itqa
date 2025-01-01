@@ -20,8 +20,8 @@ Feature: Add Admin User
   Scenario Outline: Successful user creation with all required fields filled correctly
     Then I select a user role from the dropdown
     And I select a status from the dropdown
-    And I type "Vaishali Chaudhari" in the employee name field
-    And I enter "Ranga901" in the user name field
+    And I type "Virat Kohli" in the employee name field
+    And I enter "Ranga90235" in the user name field
     And I enter "Password123!" in the password field
     And I enter "Password123!" in the confirm password field
     Then I click the Save button
@@ -38,8 +38,8 @@ Feature: Add Admin User
   Scenario: Error message displayed when passwords do not match
     Then I select a user role from the dropdown
     And I select a status from the dropdown
-    And I type "Vaishali Chaudhari" in the employee name field
-    And I enter "johndoe34" in the user name field
+    And I type "Virat Kohli" in the employee name field
+    And I enter "johndoe3435" in the user name field
     And I enter "Password123!" in the password field
     And I enter "Password456!" in the confirm password field
     When I click the Save button
@@ -52,8 +52,8 @@ Feature: Add Admin User
   Scenario Outline: Validation error for weak password
     Then I select a user role from the dropdown
     And I select a status from the dropdown
-    And I type "Vaishali Chaudhari" in the employee name field
-    And I enter "johndoe3446" in the user name field
+    And I type "Virat Kohli" in the employee name field
+    And I enter "johndoe533446" in the user name field
     And I enter "<weak_password>" in the password field
     And I enter "<weak_password>" in the confirm password field
     When I click the Save button
