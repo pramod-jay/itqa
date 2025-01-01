@@ -82,64 +82,62 @@ public class AddCandidateSteps extends BaseSteps {
         String keywords = rows.get(1).get(7);
         String comment = rows.get(1).get(8);
         String applicationDate = rows.get(1).get(9);
-
+    
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
+    
         // Fill in candidate details
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div/div/div[2]/div[1]/div[2]/input")))
-                .sendKeys(firstName);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div/div/div[2]/div[2]/div[2]/input")))
-                .sendKeys(middleName);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div/div/div[2]/div[3]/div[2]/input")))
-                .sendKeys(lastName);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[1]/div/div[2]/input"))).sendKeys(email);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[1]/div/div[2]/input"))).sendKeys(contactNo);
-
+        fillInputField(wait, "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div/div/div[2]/div[1]/div[2]/input", firstName);
+        fillInputField(wait, "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div/div/div[2]/div[2]/div[2]/input", middleName);
+        fillInputField(wait, "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div/div/div[2]/div[3]/div[2]/input", lastName);
+        fillInputField(wait, "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[1]/div/div[2]/input", email);
+        fillInputField(wait, "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[3]/div/div[1]/div/div[2]/input", contactNo);
+    
         // Select job vacancy
-
-        // Step 1: Click the dropdown to expand it
-        WebElement dropdown = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".oxd-select-wrapper")));
-        dropdown.click();
-
-        // Step 2: Wait for all options to load
-        List<WebElement> options = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".oxd-select-option")));
-
-        // Step 3: Iterate through the options and match the desired option
-        boolean optionFound = false;
-
-        for (WebElement option : options) {
-            String optionText = option.getText();
-            if (optionText.equals(vacancy)) {
-                option.click(); // Click the matching option
-                optionFound = true;
-                break;
-            }
-        }
-
-        if (!optionFound) {
-            throw new NoSuchElementException("Option '" + vacancy + "' not found in the dropdown");
-        }
-
-        // Locate the custom file upload element
-        WebElement uploadDiv = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(@class, 'oxd-file-div--active')]")
-        ));
-        // Click the div to open the file dialog
-        uploadDiv.click();
-
-        // Locate the hidden <input> element and send the file path
-        WebElement fileInput = driver.findElement(By.xpath("//input[@type='file']"));
-        String filePath = System.getProperty("user.dir") + "\\src\\test\\resources\\resume.pdf"; // Adjust file path
-        fileInput.sendKeys(filePath);
-
+        selectDropdownOption(wait, ".oxd-select-wrapper", ".oxd-select-option", vacancy);
+    
+        // Upload the resume file
+        uploadFile(wait, "//div[contains(@class, 'oxd-file-div--active')]", "//input[@type='file']", resumeFileName);
+    
         // Set keywords and comments
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[5]/div/div[1]/div/div[2]/input"))).sendKeys(keywords);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[5]/div/div[1]/div/div[2]/input"))).sendKeys(comment);
-
+        fillInputField(wait, "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[5]/div/div[1]/div/div[2]/input", keywords);
+        fillInputField(wait, "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[5]/div/div[1]/div/div[2]/input", comment);
+    
+        // Click the Save button
         WebElement saveBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[8]/button[2]")));
         saveBtn.click();
     }
-
+    
+    // Helper method to fill input fields
+    private void fillInputField(WebDriverWait wait, String xpath, String value) {
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+        element.clear();
+        element.sendKeys(value);
+    }
+    
+    // Helper method to select a dropdown option
+    private void selectDropdownOption(WebDriverWait wait, String dropdownCss, String optionsCss, String value) {
+        WebElement dropdown = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(dropdownCss)));
+        dropdown.click();
+    
+        List<WebElement> options = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(optionsCss)));
+        for (WebElement option : options) {
+            if (option.getText().equals(value)) {
+                option.click();
+                return;
+            }
+        }
+        throw new NoSuchElementException("Option '" + value + "' not found in the dropdown");
+    }
+    
+    // Helper method to upload a file
+    private void uploadFile(WebDriverWait wait, String uploadDivXpath, String fileInputXpath, String fileName) {
+        WebElement uploadDiv = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(uploadDivXpath)));
+        uploadDiv.click();
+    
+        WebElement fileInput = driver.findElement(By.xpath(fileInputXpath));
+        String filePath = System.getProperty("user.dir") + "\\src\\test\\resources\\" + fileName;
+        fileInput.sendKeys(filePath);
+    }
 
 
     @Severity(SeverityLevel.CRITICAL)
