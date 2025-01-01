@@ -4,17 +4,23 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import api.utils.BaseUrlUtil;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.Assert;
 
-import java.util.HashSet;
+import io.qameta.allure.*;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+
+
+@Epic("Book API Tests")
+@Feature("Get Book")
+@Owner("Lasantha Pradeep")
 public class getAllBookSteps {
 
 
@@ -22,6 +28,9 @@ public class getAllBookSteps {
     String baseUrl = BaseUrlUtil.BASE_URL;
 
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Send a GET request to fetch all books from the API endpoint")
+    @Step("Send GET request to endpoint {0}")
     @When("I send GET request to {string}")
     public void i_send_get_request_to(String  endpoint ) {
          response = RestAssured
@@ -36,6 +45,9 @@ public class getAllBookSteps {
     }
 
 
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that the response contains a list of expected books")
+    @Step("Verify response contains expected book list")
     @Then("the response should include a list of books:")
     public void the_response_should_include_the_book_details(DataTable dataTable) {
         String responseBody = response.getBody().asString();

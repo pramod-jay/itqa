@@ -9,6 +9,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import io.cucumber.java.en.And;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.Keys;
@@ -25,13 +28,23 @@ import java.util.List;
 import static org.testng.AssertJUnit.assertEquals;
 
 
+import io.qameta.allure.*;
+
+
+@Epic("Admin Management")
+@Feature("Add Admin User")
+@Owner("Lasantha Pradeep")
 public class AddAdminUser extends BaseSteps {
     @Before
+    @Step("Setup WebDriver and wait configurations")
     public void setup() {
         wait =  new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Click on the admin button to navigate to admin management page.")
+    @Story("Navigate to Admin Section")
     @When("I click the admin button")
     public void i_click_the_admin_button() {
         WebElement adminBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -40,6 +53,10 @@ public class AddAdminUser extends BaseSteps {
         adminBtn.click();
 
     }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify user management screen appears after clicking admin button.")
+    @Story("Admin Navigation")
     @Then("I should see the user management screen")
     public void i_should_see_the_user_management_screen() {
         wait.until(ExpectedConditions.urlToBe("https://opensource-demo.orangehrmlive.com/web/index.php/admin/viewSystemUsers"));
@@ -47,6 +64,9 @@ public class AddAdminUser extends BaseSteps {
         String currentUrl = driver.getCurrentUrl();
         Assert.assertEquals(currentUrl, "https://opensource-demo.orangehrmlive.com/web/index.php/admin/viewSystemUsers");
     }
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Click the add button to open the add user form.")
+    @Story("Add New Admin")
     @When("I click the add button")
     public void i_click_the_add_button() {
         WebElement addUserBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -56,6 +76,9 @@ public class AddAdminUser extends BaseSteps {
 
 
     }
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Ensure the add user form is displayed after clicking the add button.")
+    @Story("Add New Admin")
     @Then("I should see the Add User Form")
     public void i_should_see_the_add_user_form() {
         wait.until(ExpectedConditions.urlToBe("https://opensource-demo.orangehrmlive.com/web/index.php/admin/saveSystemUser"));
@@ -63,6 +86,10 @@ public class AddAdminUser extends BaseSteps {
         String currentUrl = driver.getCurrentUrl();
         Assert.assertEquals(currentUrl, "https://opensource-demo.orangehrmlive.com/web/index.php/admin/saveSystemUser");
     }
+
+    @Severity(SeverityLevel.MINOR)
+    @Description("Select a user role from the dropdown menu.")
+    @Story("Fill User Form")
     @Then("I select a user role from the dropdown")
     public void i_select_a_user_role_from_the_dropdown() {
         WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -80,6 +107,9 @@ public class AddAdminUser extends BaseSteps {
     }
 
 
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Enter employee name and validate selection.")
+    @Story("Fill User Form")
     @And("I type {string} in the employee name field")
     public void i_type_in_the_employee_name_field(String employeeName) {
         WebElement employeeNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -99,6 +129,9 @@ public class AddAdminUser extends BaseSteps {
     }
 
 
+    @Severity(SeverityLevel.MINOR)
+    @Description("Select status from the dropdown menu.")
+    @Story("Fill User Form")
     @And("I select a status from the dropdown")
     public void i_select_a_status_from_the_dropdown() {
         WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -115,6 +148,9 @@ public class AddAdminUser extends BaseSteps {
         dropdownItem.click();
     }
 
+    @Step("Enter {userName} in the user name field")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Fills in the username field during user registration")
     @And("I enter {string} in the user name field")
     public void i_enter_in_the_user_name_field(String userName) {
         WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -122,6 +158,9 @@ public class AddAdminUser extends BaseSteps {
         )));
         userNameField.sendKeys(userName);
     }
+    @Step("Enter {password} in the password field")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Fills in the password field during user registration")
     @And("I enter {string} in the password field")
     public void i_enter_in_the_password_field(String  password) {
         WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -129,6 +168,9 @@ public class AddAdminUser extends BaseSteps {
         )));
         passwordField.sendKeys(password);
     }
+    @Step("Enter {confirmPassword} in the confirm password field")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Fills in the confirm password field during user registration")
     @And("I enter {string} in the confirm password field")
     public void i_enter_in_the_confirm_password_field(String confirmPassword) {
         WebElement confirmPasswordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -136,6 +178,9 @@ public class AddAdminUser extends BaseSteps {
         )));
         confirmPasswordField.sendKeys(confirmPassword);
     }
+    @Step("Click the Save button")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Clicks the save button to submit the form")
     @When("I click the Save button")
     public void i_click_the_save_button() {
         WebElement saveButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -148,6 +193,9 @@ public class AddAdminUser extends BaseSteps {
 
 //  Error message displayed when passwords do not match
 
+    @Step("Validate password mismatch error with message {expectedMessage}")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Validates if the correct password mismatch error is displayed")
     @Then("I should see a password mismatch error with message {string}")
     public void iShouldSeeAPasswordMismatchErrorWithMessage(String expectedMessage) {
         // Locate the error message using the provided XPath
@@ -164,6 +212,9 @@ public class AddAdminUser extends BaseSteps {
 
 //    Validation error for weak password
 
+    @Step("Validate password strength error with message {expectedMessage}")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Validates if the correct password strength error is displayed")
     @Then("I should see a password strength error with message {string}")
     public void i_should_see_a_password_strength_error_with_message(String expectedMessage) {
 
@@ -181,6 +232,9 @@ public class AddAdminUser extends BaseSteps {
 
 //    Validation error when required fields are left empty
 
+    @Step("Leave the user role field empty")
+    @Severity(SeverityLevel.MINOR)
+    @Description("Leaves the user role field empty for validation check")
     @Then("I leave the user role field empty")
     public void iLeaveTheUserRoleDropdownEmpty() {
         WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -193,6 +247,9 @@ public class AddAdminUser extends BaseSteps {
         action.sendKeys(Keys.ESCAPE).perform();  // Simulate pressing escape to close the dropdown
     }
 
+    @Step("Leave the status field empty")
+    @Severity(SeverityLevel.MINOR)
+    @Description("Leaves the status field empty for validation check")
     @And("I leave the status field empty")
     public void iLeaveTheStatusDropdownEmpty() {
         WebElement dropDownBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -205,6 +262,9 @@ public class AddAdminUser extends BaseSteps {
         action.sendKeys(Keys.ESCAPE).perform();
     }
 
+    @Step("Leave the employee name field empty")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Clears the employee name input field")
     @And("I leave the employee name field empty")
     public void iLeaveTheEmployeeNameFieldEmpty() {
         WebElement employeeNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -213,6 +273,9 @@ public class AddAdminUser extends BaseSteps {
         employeeNameField.sendKeys("");
     }
 
+    @Step("Leave the user name field empty")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Clears the user name input field")
     @And("I leave the user name field empty")
     public void iLeaveTheUserNameFieldEmpty() {
         WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -221,6 +284,9 @@ public class AddAdminUser extends BaseSteps {
         userNameField.sendKeys("");
     }
 
+    @Step("Leave the password field empty")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Clears the password input field")
     @And("I leave the password field empty")
     public void iLeaveThePasswordFieldEmpty() {
         WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -229,6 +295,9 @@ public class AddAdminUser extends BaseSteps {
         passwordField.sendKeys("");
     }
 
+    @Step("Leave the confirm password field empty")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Clears the confirm password input field")
     @And("I leave the confirm password field empty")
     public void iLeaveTheConfirmPasswordFieldEmpty() {
         WebElement confirmPasswordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -239,6 +308,9 @@ public class AddAdminUser extends BaseSteps {
 
 
 
+    @Step("Verify validation errors for all fields")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Checks for the presence of validation error messages in the form")
     @Then("I should see {string} validation errors for all general fields")
     public void iShouldSeeValidationErrorsForAllGeneralFields(String validationMessage) {
         List<WebElement> validationErrors = driver.findElements(By.xpath("//span[@class='oxd-text oxd-text--span oxd-input-field-error-message']"));
@@ -247,6 +319,9 @@ public class AddAdminUser extends BaseSteps {
         }
     }
 
+    @Step("Verify confirm password field validation error")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Checks the validation message for the confirm password field")
     @And("I should see {string} for the confirm password field")
     public void iShouldSeeForTheConfirmPasswordField(String validationMessage) {
         WebElement confirmPasswordError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
