@@ -3,7 +3,7 @@ Feature: getAllBooks
 
 
   Scenario: Successfully retrieve all books
-    When I send a GET request to "api/books"
+    When I send GET request to "api/books"
     Then the response should include a list of books:
 
       | id | title        | author      |
