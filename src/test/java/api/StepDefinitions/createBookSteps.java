@@ -80,15 +80,15 @@ public class createBookSteps {
     @Step("Then the response should include the book details: {dataTable}")
     @Then("the response should include the book details:")
     public void the_response_should_include_the_book_details(DataTable dataTable) {
-        String responseBody = response.getBody().asString();
-        JsonPath jsonPath = new JsonPath(responseBody);
+        String responseBody = response.getBody().asString(); //Extracting the response body
+        JsonPath jsonPath = new JsonPath(responseBody); //Parsing the JSON response
 
-        List<String> expectedKeys = dataTable.asList(String.class);
+        List<String> expectedKeys = dataTable.asList(String.class); //Retrieving expected keys
         Set<String> actualKeys = jsonPath.getMap("").keySet()
                 .stream()
                 .map(Object::toString) // Convert each key to String
                 .collect(Collectors.toSet());
-        Assert.assertEquals(actualKeys, new HashSet<>(expectedKeys));
+        Assert.assertEquals(actualKeys, new HashSet<>(expectedKeys)); //Convert expected keys to set and compare them
     }
 
     @Severity(SeverityLevel.CRITICAL)
