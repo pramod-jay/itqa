@@ -13,6 +13,8 @@ import org.testng.Assert;
 import ui.BaseSteps.BaseSteps;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -229,19 +231,45 @@ public class ClaimSteps extends BaseSteps {
     @Then("I select event Travel Allowance from dropdown")
     public void i_select_event_travel_allowance_from_dropdown() {
 
+//        WebElement eventSelection = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+//                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
+//        )));
+//        eventSelection.click();
+//
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+//                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
+//        )));
+//        WebElement eventSelectionItem = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+//                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[4]/span"
+//        )));
+//
+//        eventSelectionItem.click();
+
+        // Click the dropdown to open the list
         WebElement eventSelection = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
         )));
         eventSelection.click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
-        )));
-        WebElement eventSelectionItem = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[5]"
+        // Wait for the dropdown options to become visible
+        WebElement dropdownContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]"
         )));
 
-        eventSelectionItem.click();
+        // Get all dropdown items
+        List<WebElement> dropdownItems = dropdownContainer.findElements(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]"));
+
+        // Iterate through the items and select the one matching 'Travel Allowance'
+        for (WebElement item : dropdownItems) {
+            if (item.getText().trim().equals("Travel Allowance")) {
+                item.click();
+                return; // Exit once the correct item is found and clicked
+            }
+        }
+
+        // Throw an exception if 'Travel Allowance' is not found
+        throw new NoSuchElementException("Travel Allowance option not found in the dropdown.");
+
 
     }
 

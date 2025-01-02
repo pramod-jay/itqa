@@ -16,14 +16,14 @@ Feature: Claim
     When I click the Claim button
     Then I should see the Claim screen
 
-    # @TestCaseId("UI_TC001")
+  @TestCaseId("UI_TC014")
   Scenario Outline: Add an active event successfully to Claim
     When I click Configuration dropdown
     And select Events
     Then I should see Events screen
     And I click Add button on Events screen
     Then I should see Add Event screen
-    Then I enter "Fuel Allowance5" for Event Name
+    Then I enter "Fuel Allowance" for Event Name
     And I enter "Allowance for fuel 2" for Description
     And I press the toggle
     And I click event Save button
@@ -33,6 +33,7 @@ Feature: Claim
       | title   | message            |
       | Success | Successfully Saved |
 
+  @TestCaseId("UI_TC015")
   Scenario: Adding an event that already exist
     When I click Configuration dropdown
     And select Events
@@ -42,6 +43,7 @@ Feature: Claim
     When I enter "Fuel Allowance5" for Event Name
     Then I should see a Already exists error message below Event Name field
 
+  @TestCaseId("UI_TC016")
   Scenario Outline: Creating a Claim Request
     When I click Submit Claim button
     Then I should see Create Claim Request screen
@@ -56,6 +58,7 @@ Feature: Claim
       | title   | message            |
       | Success | Successfully Saved |
 
+  @TestCaseId("UI_TC017")
   Scenario: Creating claim unsuccessfully without required data
     When I click Submit Claim button
     Then I should see Create Claim Request screen
