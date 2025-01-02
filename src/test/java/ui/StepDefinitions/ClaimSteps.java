@@ -57,19 +57,17 @@ public class ClaimSteps extends BaseSteps {
     @Step("Click Configuration dropdown")
     @When("I click Configuration dropdown")
     public void i_click_configuration_dropdown() {
-        //click configuration button
+
         WebElement configDropDown = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[1]/header/div[2]/nav/ul/li[1]/span"
         )));
         configDropDown.click();
 
-        //Check dropdown is displayed
         WebElement dropDownMenuElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[1]/header/div[2]/nav/ul/li[1]/ul"
         )));
         assert  dropDownMenuElement.isDisplayed(): "Dropdown items are not available";
 
-        //Check dropdown items
         String[] dropDownItem = {
                 "//*[@id=\"app\"]/div[1]/div[1]/header/div[2]/nav/ul/li[1]/ul/li[1]/a",
                 "//*[@id=\"app\"]/div[1]/div[1]/header/div[2]/nav/ul/li[1]/ul/li[2]/a"
@@ -226,50 +224,24 @@ public class ClaimSteps extends BaseSteps {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Description("Selects 'Travel Allowance' from the event dropdown.")
-    @Step("Select Travel Allowance event")
-    @Then("I select event Travel Allowance from dropdown")
-    public void i_select_event_travel_allowance_from_dropdown() {
+    @Description("Selects 'Accommodation' from the event dropdown.")
+    @Step("Select Accommodation event")
+    @Then("I select event Accommodation from dropdown")
+    public void i_select_event_accommodation_from_dropdown() {
 
-//        WebElement eventSelection = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-//                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
-//        )));
-//        eventSelection.click();
-//
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-//                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
-//        )));
-//        WebElement eventSelectionItem = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-//                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[4]/span"
-//        )));
-//
-//        eventSelectionItem.click();
-
-        // Click the dropdown to open the list
         WebElement eventSelection = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
         )));
         eventSelection.click();
 
-        // Wait for the dropdown options to become visible
-        WebElement dropdownContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]"
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
+        )));
+        WebElement eventSelectionItem = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[2]/span"
         )));
 
-        // Get all dropdown items
-        List<WebElement> dropdownItems = dropdownContainer.findElements(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]"));
-
-        // Iterate through the items and select the one matching 'Travel Allowance'
-        for (WebElement item : dropdownItems) {
-            if (item.getText().trim().equals("Travel Allowance")) {
-                item.click();
-                return; // Exit once the correct item is found and clicked
-            }
-        }
-
-        // Throw an exception if 'Travel Allowance' is not found
-        throw new NoSuchElementException("Travel Allowance option not found in the dropdown.");
-
+        eventSelectionItem.click();
 
     }
 
@@ -320,15 +292,21 @@ public class ClaimSteps extends BaseSteps {
     @Step("Verify reference ID is displayed for submitted claim")
     @Then("I should see submitted claim with a reference Id")
     public void i_should_see_submitted_claim_with_a_reference_id() {
+
         WebElement refID = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div[1]/form/div[1]/div/div[1]/div/div[2]/input"
         )));
 
         String ref = refID.getDomProperty("value");
-        Assert.assertNotEquals(ref,null);
-        String id = ref.substring(ref.length() - 2);
+        Assert.assertNotEquals(ref, null);
+
+        String refIdSubstring = ref.substring(ref.length() - 2);
+
+        String refIdFormatted = String.format("%02d", Integer.parseInt(refIdSubstring));
+
         String currentUrl = driver.getCurrentUrl();
-        Assert.assertEquals(currentUrl, "https://opensource-demo.orangehrmlive.com/web/index.php/claim/submitClaim/id/"+id);
+
+        Assert.assertEquals(currentUrl, "https://opensource-demo.orangehrmlive.com/web/index.php/claim/submitClaim/id/" + refIdFormatted);
     }
 
 

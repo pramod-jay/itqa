@@ -40,16 +40,16 @@ Feature: Claim
     Then I should see Events screen
     And I click Add button on Events screen
     Then I should see Add Event screen
-    When I enter "Fuel Allowance5" for Event Name
+    When I enter "Fuel Allowance" for Event Name
     Then I should see a Already exists error message below Event Name field
 
   @TestCaseId("UI_TC016")
   Scenario Outline: Creating a Claim Request
     When I click Submit Claim button
     Then I should see Create Claim Request screen
-    And I select event Travel Allowance from dropdown
+    And I select event Accommodation from dropdown
     And I select Sri Lankan rupee as currency from the given dropdown
-    Then I should enter remark as "Travel Allowance Remark"
+    Then I should enter remark as "This is a test remark"
     And I click Claim request Create button
     Then I should see a message with title "<title>" and message "<message>"
     Then I should see submitted claim with a reference Id
@@ -64,29 +64,3 @@ Feature: Claim
     Then I should see Create Claim Request screen
     And I click Claim request Create button
     Then I should see "Required" error messages below Event and Currency fields
-
-
-
-
-
-
-
-
-
-
-
-
-
-#  Scenario Outline: Successful leave application for three days with all the required data
-#    Then I select the leave type
-#    And I enter a "today" as the from date
-#    And I enter a "day_after_tomorrow" as the to date
-#    Then I should see the Partial Days selector
-#    And I enter comments as "Leave Comment"
-#    Then I click the Apply button
-#    Then I should see a message with title "<title>" and message "<message>"
-#
-#    Examples:
-#      | title   | message            |
-#      | Success | Successfully Saved |
-
