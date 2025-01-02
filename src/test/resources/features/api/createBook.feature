@@ -3,6 +3,7 @@
 # Description Feature file for test create book API
 
 Feature: createBook
+
   @TestCaseId("API_TC001")
   Scenario: Successfully create a book with all parameters
     Given the book details are:
@@ -44,6 +45,15 @@ Feature: createBook
     And the response should include a message "You are not authorized to create the book"
 
   @TestCaseId("API_TC005")
+  Scenario: Unsuccessfully create with unauthorized user
+    Given the book details are:
+      | title       | author       |
+      | The Shining | Stephen King |
+    When I send a POST request to "api/books" with username "user" and password "password"
+    Then the response status code should be 401
+    And the response should include a message "You are not authorized to create the book"
+
+  @TestCaseId("API_TC006")
   Scenario Outline: Unsuccessfully create without mandatory parameter
     Given the book details are:
       | title  | author   |
@@ -58,10 +68,10 @@ Feature: createBook
       |                   | Stephenie Meyer |
       |                   |                 |
 
-  @TestCaseId("API_TC006")
+  @TestCaseId("API_TC007")
   Scenario: Successfully create with another book with same author
     Given the book details are:
-      | title       | author        |
+      | title        | author        |
       | Burmese Days | George Orwell |
     When I send a POST request to "api/books"
     Then the response status code should be 201
