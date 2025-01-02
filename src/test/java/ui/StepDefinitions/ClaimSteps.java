@@ -319,7 +319,7 @@ public class ClaimSteps extends BaseSteps {
         WebElement eventSelectionError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/span"
         )));
-        assert eventSelectionError.isDisplayed() : "Leave type error message element is not displayed";
+        assert eventSelectionError.isDisplayed() : "Event type error message element is not displayed";
         Assert.assertEquals(eventSelectionError.getText(), requiredMsg);
 
         //Currency
