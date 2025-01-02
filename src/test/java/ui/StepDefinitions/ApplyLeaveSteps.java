@@ -21,7 +21,7 @@ import java.time.LocalDate;
 @Feature("Apply Leave Functionality")
 @Owner("Pramod Jayathilaka")
 public class ApplyLeaveSteps extends BaseSteps {
-    @Severity(SeverityLevel.BLOCKER)
+    @Severity(SeverityLevel.NORMAL)
     @Description("Setup method to initialize WebDriverWait before each scenario.")
     @Step("Initialize WebDriverWait with a 10-second timeout")
     @Before

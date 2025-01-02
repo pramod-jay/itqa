@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.itqa</groupId>
-    <artifactId>itqa</artifactId>
+    <groupId>org.itqa_group21</groupId>
+    <artifactId>itqa_group21</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>itqa_group21</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.plugin>3.11.0</maven.compiler.plugin>
-        <maven.surefire.plugin>3.1.2</maven.surefire.plugin>
         <allure.version>2.24.0</allure.version>
         <aspectj.version>1.9.19</aspectj.version>
     </properties>
@@ -78,6 +78,12 @@
             <artifactId>allure-testng</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -90,23 +96,6 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.plugin}</version>
-                <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.aspectj</groupId>
-                        <artifactId>aspectjweaver</artifactId>
-                        <version>${aspectj.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>io.qameta.allure</groupId>
