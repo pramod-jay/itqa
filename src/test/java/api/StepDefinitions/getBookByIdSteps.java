@@ -31,11 +31,11 @@ public class getBookByIdSteps {
     }
     @Step("Send a GET request to the {endpoint}")
     @Description("Send a GET request to fetch book details using the provided endpoint and book ID")
-    @When("I send a GET request to {string}")
-    public void i_send_a_get_request_to(String endpoint) {
+    @When("I send a GET request to {string} with username {string}")
+    public void i_send_a_get_request_to(String endpoint, String userName) {
         response = RestAssured
                 .given()
-                .auth().basic("admin", "password")
+                .auth().basic(userName, "password")
                 .header("Content-Type", "application/json")
                 .get(baseUrl + endpoint + "/" + BookId)
                 .then()
