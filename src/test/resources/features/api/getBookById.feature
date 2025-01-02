@@ -13,7 +13,7 @@ Feature: get book by id
       | id | title        | author      |
       | 1  | Harry Potter | J.K.Rowling |
 
-  @TestCaseId("API_TC015")
+  @TestCaseId("API_TC016")
   Scenario: Book is not found when fetching by invalid id
     Given the book id 7
     When I send a GET request to "api/books" with username "admin"
