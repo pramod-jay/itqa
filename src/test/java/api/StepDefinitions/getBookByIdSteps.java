@@ -56,7 +56,7 @@ public class getBookByIdSteps {
 
         String responseBody = response.getBody().asString();
 
-        Assert.assertEquals(response.getContentType(), "application/json", "Unexpected Content-Type");
+        Assert.assertEquals(response.getStatusCode(), 200);
 
         JsonPath jsonPath = new JsonPath(responseBody);
 
