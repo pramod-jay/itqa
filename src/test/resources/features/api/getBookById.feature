@@ -9,6 +9,7 @@ Feature: get book by id
     Given the book id 1
     When I send a GET request to "api/books"
     Then the response should include the referred book details:
+
       | id | title        | author      |
       | 1  | Harry Potter | J.K.Rowling |
 
