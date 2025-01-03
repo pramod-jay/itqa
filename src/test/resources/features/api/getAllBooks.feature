@@ -3,6 +3,7 @@ Feature: getAllBooks
 
 
   @TestCaseId("API_TC018")
+  
   Scenario: Successfully retrieve all books
     When I send GET request to "api/books"
     Then the response should include a list of books:

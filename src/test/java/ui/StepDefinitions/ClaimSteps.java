@@ -13,6 +13,8 @@ import org.testng.Assert;
 import ui.BaseSteps.BaseSteps;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,19 +57,17 @@ public class ClaimSteps extends BaseSteps {
     @Step("Click Configuration dropdown")
     @When("I click Configuration dropdown")
     public void i_click_configuration_dropdown() {
-        //click configuration button
+
         WebElement configDropDown = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[1]/header/div[2]/nav/ul/li[1]/span"
         )));
         configDropDown.click();
 
-        //Check dropdown is displayed
         WebElement dropDownMenuElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[1]/header/div[2]/nav/ul/li[1]/ul"
         )));
         assert  dropDownMenuElement.isDisplayed(): "Dropdown items are not available";
 
-        //Check dropdown items
         String[] dropDownItem = {
                 "//*[@id=\"app\"]/div[1]/div[1]/header/div[2]/nav/ul/li[1]/ul/li[1]/a",
                 "//*[@id=\"app\"]/div[1]/div[1]/header/div[2]/nav/ul/li[1]/ul/li[2]/a"
@@ -224,10 +224,10 @@ public class ClaimSteps extends BaseSteps {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Description("Selects 'Travel Allowance' from the event dropdown.")
-    @Step("Select Travel Allowance event")
-    @Then("I select event Travel Allowance from dropdown")
-    public void i_select_event_travel_allowance_from_dropdown() {
+    @Description("Selects 'Accommodation' from the event dropdown.")
+    @Step("Select Accommodation event")
+    @Then("I select event Accommodation from dropdown")
+    public void i_select_event_accommodation_from_dropdown() {
 
         WebElement eventSelection = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
@@ -238,7 +238,7 @@ public class ClaimSteps extends BaseSteps {
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div"
         )));
         WebElement eventSelectionItem = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[5]"
+                "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/div[2]/div/div[2]/div[2]/span"
         )));
 
         eventSelectionItem.click();
@@ -292,15 +292,21 @@ public class ClaimSteps extends BaseSteps {
     @Step("Verify reference ID is displayed for submitted claim")
     @Then("I should see submitted claim with a reference Id")
     public void i_should_see_submitted_claim_with_a_reference_id() {
+
         WebElement refID = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/div[1]/form/div[1]/div/div[1]/div/div[2]/input"
         )));
 
         String ref = refID.getDomProperty("value");
-        Assert.assertNotEquals(ref,null);
-        String id = ref.substring(ref.length() - 2);
+        Assert.assertNotEquals(ref, null);
+
+        String refIdSubstring = ref.substring(ref.length() - 2);
+
+        String refIdFormatted = String.format("%02d", Integer.parseInt(refIdSubstring));
+
         String currentUrl = driver.getCurrentUrl();
-        Assert.assertEquals(currentUrl, "https://opensource-demo.orangehrmlive.com/web/index.php/claim/submitClaim/id/"+id);
+
+        Assert.assertEquals(currentUrl, "https://opensource-demo.orangehrmlive.com/web/index.php/claim/submitClaim/id/" + refIdFormatted);
     }
 
 
@@ -313,7 +319,7 @@ public class ClaimSteps extends BaseSteps {
         WebElement eventSelectionError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div/div[1]/div/span"
         )));
-        assert eventSelectionError.isDisplayed() : "Leave type error message element is not displayed";
+        assert eventSelectionError.isDisplayed() : "Event type error message element is not displayed";
         Assert.assertEquals(eventSelectionError.getText(), requiredMsg);
 
         //Currency

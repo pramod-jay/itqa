@@ -12,10 +12,8 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.Assert;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Epic("Book API Tests")
 @Feature("Get Book by ID")
@@ -33,11 +31,11 @@ public class getBookByIdSteps {
     }
     @Step("Send a GET request to the {endpoint}")
     @Description("Send a GET request to fetch book details using the provided endpoint and book ID")
-    @When("I send a GET request to {string}")
-    public void i_send_a_get_request_to(String endpoint) {
+    @When("I send a GET request to {string} with username {string}")
+    public void i_send_a_get_request_to(String endpoint, String userName) {
         response = RestAssured
                 .given()
-                .auth().basic("admin", "password")
+                .auth().basic(userName, "password")
                 .header("Content-Type", "application/json")
                 .get(baseUrl + endpoint + "/" + BookId)
                 .then()
@@ -49,15 +47,26 @@ public class getBookByIdSteps {
     @Description("Validate the response body contains the expected book details")
     @Then("the response should include the referred book details:")
     public void the_response_should_include_the_book_details(DataTable dataTable) {
+        List<List<String>> expectedBookDetails = dataTable.asLists(String.class);
+
+        List<String> expectedBook = expectedBookDetails.get(1);
+        String expectedId = expectedBook.get(0);
+        String expectedTitle = expectedBook.get(1);
+        String expectedAuthor = expectedBook.get(2);
+
         String responseBody = response.getBody().asString();
+
+        Assert.assertEquals(response.getStatusCode(), 200);
+
         JsonPath jsonPath = new JsonPath(responseBody);
 
-        List<String> expectedValues = dataTable.asList(String.class);
-        Set<String> actualValues = jsonPath.getMap("").values()
-                .stream()
-                .map(Object::toString)
-                .collect(Collectors.toSet());
-        Assert.assertEquals(actualValues, new HashSet<>(expectedValues));
+        String actualId = jsonPath.getString("id");
+        String actualTitle = jsonPath.getString("title");
+        String actualAuthor = jsonPath.getString("author");
+
+        Assert.assertEquals(actualId, expectedId, "Book ID does not match");
+        Assert.assertEquals(actualTitle, expectedTitle, "Book title does not match");
+        Assert.assertEquals(actualAuthor, expectedAuthor, "Book author does not match");
     }
 
     @Step("Validate that the response status code is {statusCode}")
