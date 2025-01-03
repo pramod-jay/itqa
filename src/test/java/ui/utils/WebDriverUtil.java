@@ -10,8 +10,6 @@ public class WebDriverUtil {
         options.addArguments("--headless"); // Runs Chrome in headless mode
         options.addArguments("--no-sandbox"); // Disables sandboxing (for security)
         options.addArguments("--disable-dev-shm-usage"); // Disables shared memory usage (avoids crashes)
-        options.addArguments("--disable-gpu"); // Disables GPU hardware acceleration
-        options.addArguments("--disable-extensions"); // Disables extensions
         options.addArguments("--disable-web-security", "--ignore-certificate-errors");
         return new ChromeDriver(options);
     }
