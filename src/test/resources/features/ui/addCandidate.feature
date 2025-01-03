@@ -15,7 +15,7 @@ Feature: Add Candidate
     When I click the Recruitment button
     Then I should see the Recruitment screen
 
-  @RecruitmentTest
+  @DeleteTest
   @TestCaseId("UI_TC013")
   Scenario: Creating candidate successfully with required data
     Given I navigate to the add candidate
