@@ -1,0 +1,67 @@
+
+Project Configuration Steps
+
+Follow the steps below to set up and run the project:
+
+---
+
+Prerequisites
+1. Java Version: Ensure Java 23 is installed on your machine.
+2. Maven: Verify that Apache Maven is installed and properly configured in your system's PATH.
+
+---
+
+Cloning the Repository
+1. Clone the project repository using the following command:
+   git clone https://github.com/pramod-jay/itqa_Group21.git
+
+---
+
+Running All Test Cases
+1. Navigate to the project root directory.
+2. Execute the following command to run all test cases:
+   mvn test
+   - This process will begin executing the test cases, and it may take several minutes to complete.
+
+---
+
+Generating and Accessing Allure Reports
+1. Generate the Allure report using:
+   mvn allure:report
+2. Serve the Allure report locally for viewing:
+   mvn allure:serve
+3. Alternatively, access the hosted Allure report on GitHub Pages:
+   - Allure Report Link: https://pramod-jay.github.io/itqa_Group21/
+
+---
+
+Running UI and API Tests Separately
+1. UI Tests:
+   - Run the TestRunnerUI class located at:
+     src/test/runner/TestRunnerUI.java
+2. API Tests:
+   - Run the TestRunnerAPI class located at:
+     src/test/runner/TestRunnerAPI.java
+
+---
+
+Running Individual Test Cases
+- You can also run test cases individually from the feature files located at:
+  src/test/resources/features/api
+  src/test/resources/features/ui
+
+---
+
+Project Overview
+- CI/CD Integration:
+  - The project integrates a CI/CD pipeline configured with Maven and Allure reporting.
+- Test Case Summary:
+  - Total: 39 test cases
+    - UI Tests: 17
+    - API Tests: 22
+- Backend Hosting:
+  - The backend (a simple library management system) is hosted on Azure Web App, requiring no additional configuration.
+
+--- 
+
+Feel free to follow these steps for seamless setup and execution of the project!
