@@ -7,7 +7,7 @@ Feature: updateBook
   I want to update the book details
   So that the updated information is reflected in the system
 
-  @TestCaseId("API_TC018")
+  @TestCaseId("API_TC019")
   Scenario: Successfully update a book
     Given a book exist in the system with ID 1
     When I send a PUT request to "api/books/" with following details:
@@ -18,7 +18,7 @@ Feature: updateBook
       |id | title                         | author      |
       | 1 | Harry Potter - Goblet of Fire | J.K.Rowling |
 
-  @TestCaseId("API_TC019")
+  @TestCaseId("API_TC020")
   Scenario: Fail to update a book with invalid ID
     Given a book exist in the system with ID 1900
     When I send a PUT request to "api/books/" with following details:
@@ -27,7 +27,7 @@ Feature: updateBook
     Then the response of the status code should be 404
     And the error message should be "Book not found"
 
-  @TestCaseId("API_TC020")
+  @TestCaseId("API_TC021")
   Scenario: Fail to update a book with missing mandatory parameters
       Given a book exist in the system with ID 1
       When I send a PUT request to "api/books/" with following details:
@@ -36,7 +36,7 @@ Feature: updateBook
       Then the response of the status code should be 400
       And the error message should be "Invalid | Empty Input Parameters in the Request"
 
-  @TestCaseId("API_TC021")
+  @TestCaseId("API_TC022")
   Scenario: Unauthorized attempt to update a book
     Given a book exist in the system with ID 1
     When I send a PUT request to "api/books/" with following details with username as "user" with password "password":
@@ -44,5 +44,3 @@ Feature: updateBook
       | 1     | Adventures of Huckleberry Finn | Mark Twain |
     Then the response of the status code should be 403
     And the error message should be "User is not permitted."
-
-
