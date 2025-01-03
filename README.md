@@ -131,7 +131,7 @@ We integrated a CI/CD pipeline using Maven, and Allure reports are available via
 
 ---
 
-## Collaborators
+## Contributors
 
 ### Pramod Jayathilaka  
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/pramod-jayathilaka-b57178137)  [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/pramod-jay)  
