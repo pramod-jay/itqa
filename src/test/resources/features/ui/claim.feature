@@ -24,7 +24,7 @@ Feature: Claim
     And I click Add button on Events screen
     Then I should see Add Event screen
     Then I enter "Fuel Allowance" for Event Name
-    And I enter "Allowance for fuel 2" for Description
+    And I enter "Allowance for fuel" for Description
     And I press the toggle
     And I click event Save button
     Then I should see a message with title "<title>" and message "<message>"

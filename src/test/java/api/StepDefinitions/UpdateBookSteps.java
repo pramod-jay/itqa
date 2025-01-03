@@ -48,13 +48,10 @@ public class UpdateBookSteps {
     @Description("Sends a PUT request to update book details with the provided book details.")
     @When("I send a PUT request to {string} with following details:")
     public void i_send_a_put_request_to_with_following_details(String endPoint, io.cucumber.datatable.DataTable bookTable) {
-        // Map the data table to a BookDetails object
         bookDetailsList = bookTable.asList(BookDetails.class);
 
-        // Get the book details to update
         bookDetails = bookDetailsList.get(0);
 
-        // Send the PUT request with the book details as JSON
         response = io.restassured.RestAssured.given()
                 .baseUri(baseUrl)
                 .header("Content-Type", "application/json")
@@ -63,7 +60,6 @@ public class UpdateBookSteps {
                 .when()
                 .put(baseUrl + endPoint + bookDetails.getId()); // Append the ID to the endpoint
 
-        // Output the response for debugging
         System.out.println("Response: " + response.getBody().asString());
 
     }
@@ -74,7 +70,6 @@ public class UpdateBookSteps {
     @Then("the response of the status code should be {int}")
     public void the_response_of_the_status_code_should_be(Integer updateStatusCode) {
         Assert.assertEquals(updateStatusCode, response.getStatusCode());
-
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -82,10 +77,8 @@ public class UpdateBookSteps {
     @Description("Validates that the updated book details in the response match the expected details.")
     @Then("the response should include the updated book details:")
     public void the_response_should_include_the_updated_book_details(io.cucumber.datatable.DataTable resultTable) {
-        //Convert the resultTable to a list of maps
         List<Map<String, String>> tableData = resultTable.asMaps(String.class, String.class);
 
-        // Extract expected details from the table
         Map<String, String> expectedDetails = tableData.get(0);
         BookDetails expectedBookDetails = new BookDetails(
                 expectedDetails.get("id"),
@@ -93,15 +86,12 @@ public class UpdateBookSteps {
                 expectedDetails.get("author")
         );
 
-        // Deserialize the response body into a BookDetails object
         BookDetails updatedBookDetails = response.getBody().as(BookDetails.class);
 
-        // Perform assertions to validate the response
         Assert.assertEquals(updatedBookDetails.getId(), expectedBookDetails.getId(), "Book ID mismatch");
         Assert.assertEquals(updatedBookDetails.getTitle(), expectedBookDetails.getTitle(), "Book title mismatch");
         Assert.assertEquals(updatedBookDetails.getAuthor(), expectedBookDetails.getAuthor(), "Book author mismatch");
 
-        // Print the actual book details for debugging
         System.out.println("Updated Book Details: " + updatedBookDetails);
     }
 
@@ -119,25 +109,19 @@ public class UpdateBookSteps {
     @Description("Sends a PUT request to update book details using provided credentials for authentication.")
     @When("I send a PUT request to {string} with following details with username as {string} with password {string}:")
     public void i_send_a_put_request_to_with_following_details_with_username_as_with_password(String endPoint, String userName, String password, io.cucumber.datatable.DataTable bookTable) {
-        // Map the data table to a BookDetails object
         bookDetailsList = bookTable.asList(BookDetails.class);
 
-        // Get the book details to update
         bookDetails = bookDetailsList.get(0);
 
-        // Send the PUT request with the book details as JSON
         response = io.restassured.RestAssured.given()
                 .baseUri(baseUrl)
                 .header("Content-Type", "application/json")
                 .auth().basic("user", "password")
-                .body(bookDetails) // Automatically serializes the object to JSON
+                .body(bookDetails)
                 .when()
-                .put(baseUrl + endPoint + bookDetails.getId()); // Append the ID to the endpoint
+                .put(baseUrl + endPoint + bookDetails.getId());
 
-        // Output the response for debugging
         System.out.println("Response: " + response.getBody().asString());
     }
-
-
 }
 
